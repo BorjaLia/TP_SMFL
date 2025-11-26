@@ -2,6 +2,22 @@
 
 namespace coll
 {
+	bool LineOnLine(vec::Vector2 line1Point1, vec::Vector2 line1Point2, vec::Vector2 line2Point1, vec::Vector2 line2Point2)
+	{
+		vec::Vector2 a = line1Point1;
+		vec::Vector2 a2 = line1Point2;
+		vec::Vector2 b = line2Point1;
+		vec::Vector2 b2 = line2Point2;
+
+		float uA = ((b2.x - b.x) * (a.y - b.y) - (b2.y - b.y) * (a.x - b.x)) /
+			((b2.y - b.y) * (a2.x - a.x) - (b2.x - b.x) * (a2.y - a.y));
+
+		float uB = ((a2.x - a.x) * (a.y - b.y) - (a2.y - a.y) * (a.x - b.x)) /
+			((b2.y - b.y) * (a2.x - a.x) - (b2.x - b.x) * (a2.y - a.y));
+
+		return uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1;
+	}
+
 	bool PointOnRec(vec::Vector2 point, vec::Vector2 pos, vec::Vector2 size)
 	{
 		if (!(point.x > pos.x - size.x / 2.0f && point.x < pos.x + size.x / 2.0f))
