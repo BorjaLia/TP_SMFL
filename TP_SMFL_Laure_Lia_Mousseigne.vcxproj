@@ -28,6 +28,7 @@
     <ClCompile Include="src\irregular.cpp" />
     <ClCompile Include="src\LLM_math.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\main_menu.cpp" />
     <ClCompile Include="src\rigidbody.cpp" />
     <ClCompile Include="src\transform.cpp" />
   </ItemGroup>
@@ -40,6 +41,7 @@
     <ClInclude Include="src\ground.h" />
     <ClInclude Include="src\irregular.h" />
     <ClInclude Include="src\LLM_math.h" />
+    <ClInclude Include="src\main_menu.h" />
     <ClInclude Include="src\regular.h" />
     <ClInclude Include="src\rigidbody.h" />
     <ClInclude Include="src\transform.h" />
