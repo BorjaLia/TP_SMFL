@@ -5,6 +5,7 @@
 #include "globals.h"
 #include "ground.h"
 #include "car.h"
+#include "collision.h"
 
 namespace game
 {
@@ -32,7 +33,8 @@ namespace game
 	static void update();
 	static void draw();
 
-	static void collision();
+	static void carCollision();
+	static void wheelCollision();
 
 	namespace delta
 	{
@@ -52,8 +54,6 @@ namespace game //definiciones
 	{
 		init();
 
-		update();
-
 		while (objects::window.isOpen())
 		{
 			while (const std::optional event = objects::window.pollEvent())
@@ -61,7 +61,7 @@ namespace game //definiciones
 				if (event->is<sf::Event::Closed>())
 					objects::window.close();
 			}
-			
+
 			update();
 			draw();
 		}
@@ -83,8 +83,11 @@ namespace game //definiciones
 
 	static void update()
 	{
+		objects::car.wheels[0].isGrounded = false;
+
 		delta::updateDeltaT();
-		collision();
+		wheelCollision();
+		carCollision();
 		ground::update(objects::ground);
 		car::update(objects::car);
 	}
@@ -99,7 +102,7 @@ namespace game //definiciones
 		objects::window.display();
 	}
 
-	static void collision()
+	static void carCollision()
 	{
 		if (objects::car.transform.position.y > 500 - objects::car.collision.size.y)
 		{
@@ -107,10 +110,31 @@ namespace game //definiciones
 			objects::car.rigidBody.velocity *= 0.25f;
 			std::cout << "out!\n";
 		}
-		if (objects::car.transform.position.y > 500 - (objects::car.collision.size.y*2))
+		if (objects::car.transform.position.y > 500 - (objects::car.collision.size.y * 2))
 		{
 			std::cout << "force!\n";
-			rigidbody::AddForce(objects::car.rigidBody, { 0.0f,-globals::gravity * objects::car.rigidBody.mass * 5.0f});
+			rigidbody::AddForce(objects::car.rigidBody, { 0.0f,-globals::gravity * objects::car.rigidBody.mass * 5.0f });
+		}
+	}
+
+	static void wheelCollision()
+	{
+		for (int i = 0; i < objects::ground.leftPart.shape.pointAmount - 1; i++)
+		{
+			vec::Vector2 dir = objects::ground.leftPart.shape.points[i + 1] - objects::ground.leftPart.shape.points[i];
+			dir.normalize();
+
+			vec::Vector2 norm = { -dir.y,dir.x };
+
+			vec::Vector2 closestPoint;
+
+			closestPoint.x = objects::car.wheels[0].offset.x + 10 + norm.x * 10; //cambiar x radio real
+			closestPoint.y = objects::car.wheels[0].offset.y + 10 + norm.y * 10;
+
+			if (coll::LineOnLine({ objects::car.wheels[0].offset.x, objects::car.wheels[0].offset.y}, closestPoint, objects::ground.leftPart.shape.points[i], objects::ground.leftPart.shape.points[i + 1]))
+			{
+				objects::car.wheels[0].isGrounded = true;
+			}
 		}
 	}
 

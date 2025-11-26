@@ -30,7 +30,6 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\rigidbody.cpp" />
     <ClCompile Include="src\transform.cpp" />
-    <ClCompile Include="src\wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\car.h" />
@@ -44,7 +43,6 @@
     <ClInclude Include="src\regular.h" />
     <ClInclude Include="src\rigidbody.h" />
     <ClInclude Include="src\transform.h" />
-    <ClInclude Include="src\wheel.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
