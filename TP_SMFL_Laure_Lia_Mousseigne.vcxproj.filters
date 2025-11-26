@@ -10,6 +10,9 @@
     <Filter Include="src\Game">
       <UniqueIdentifier>{0fdf1962-248d-4db0-87f4-c5203dc055cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\File">
+      <UniqueIdentifier>{0e694e29-3a70-4ac8-8001-6683693ca665}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -18,10 +21,14 @@
     <ClCompile Include="src\LLM_math.cpp">
       <Filter>src\Math</Filter>
     </ClCompile>
+    <ClCompile Include="file_manager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">
       <Filter>src\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="file_manager.h">
+      <Filter>src\File</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
