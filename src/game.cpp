@@ -20,13 +20,15 @@ namespace game
 	namespace objects
 	{
 		sf::RenderWindow window;
+
 		ground::Ground ground;
 	}
 
 	static void game();
 	static void init();
-	static void update();
 	static void deinit();
+	static void update();
+	static void draw();
 
 	namespace delta
 	{
@@ -55,13 +57,9 @@ namespace game //definiciones
 				if (event->is<sf::Event::Closed>())
 					objects::window.close();
 			}
-
-			objects::window.clear();
-
-			//objects::window.draw();
-			ground::draw(objects::ground, objects::window);
-
-			objects::window.display();
+			
+			update();
+			draw();
 		}
 
 		deinit();
@@ -73,14 +71,25 @@ namespace game //definiciones
 		objects::ground = ground::init();
 	}
 
-	static void update()
-	{
-		delta::updateDeltaT();
-	}
-
 	static void deinit()
 	{
 
+	}
+
+	static void update()
+	{
+		delta::updateDeltaT();
+
+		ground::update(objects::ground);
+	}
+
+	static void draw()
+	{
+		objects::window.clear();
+
+		ground::draw(objects::ground, objects::window);
+
+		objects::window.display();
 	}
 
 	namespace delta

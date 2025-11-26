@@ -6,11 +6,21 @@
 
 namespace ground
 {
+	const int totalParts = 3;
+
+	struct Part
+	{
+		irregular::Irregular shape;
+		bool canMove = false;
+	};
+
 	struct Ground
 	{
-		irregular::Irregular leftPart;
-		irregular::Irregular middlePart;
-		irregular::Irregular rightPart;
+		Part leftPart;
+		Part middlePart;
+		Part rightPart;
+
+		bool isLooping = true;
 	};
 
 	Ground init();
