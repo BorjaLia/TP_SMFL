@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\file_manager.cpp" />
+    <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\LLM_math.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\file_manager.h" />
+    <ClInclude Include="src\game.h" />
     <ClInclude Include="src\LLM_math.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
