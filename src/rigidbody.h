@@ -2,7 +2,7 @@
 
 #include "transform.h"
 
-struct  Rigibody
+struct Rigibody
 {
     float mass = 1.0f;
 

@@ -19,13 +19,13 @@ namespace rectangleTemp
 		rect.pos.y += 100 * externs::deltaT;
 	}
 
-	static void draw(sf::RenderWindow& window)
+	/*static void draw(sf::RenderWindow& window)
 	{
 		sf::RectangleShape rectangle({ rect.width, rect.height });
 
 		rectangle.setPosition({ rect.pos.x, rect.pos.y });
 		window.draw(rectangle);
-	}
+	}*/
 }
 
 namespace ground
@@ -152,7 +152,7 @@ namespace ground
 		drawPart(ground.rightPart, window);
 
 		//Temp
-		rectangleTemp::draw(window);
+		//rectangleTemp::draw(window);
 	}
 
 	static void drawPart(Part part, sf::RenderWindow& window)

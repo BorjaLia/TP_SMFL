@@ -4,6 +4,7 @@
 
 #include "globals.h"
 #include "ground.h"
+#include "car.h"
 
 namespace game
 {
@@ -22,6 +23,7 @@ namespace game
 		sf::RenderWindow window;
 
 		ground::Ground ground;
+		car::Car car;
 	}
 
 	static void game();
@@ -67,8 +69,9 @@ namespace game //definiciones
 
 	static void init()
 	{
-		objects::window = sf::RenderWindow(sf::VideoMode({ 1500, 820 }), "SFML works!");
+		objects::window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(externs::screenWidth), static_cast<unsigned int>(externs::screenHeight) }), "SFML works!");
 		objects::ground = ground::init();
+		objects::car = car::init();
 	}
 
 	static void deinit()
@@ -81,13 +84,15 @@ namespace game //definiciones
 		delta::updateDeltaT();
 
 		ground::update(objects::ground);
+		car::update(objects::car);
 	}
 
 	static void draw()
 	{
 		objects::window.clear();
 
-		ground::draw(objects::ground, objects::window);
+		//ground::draw(objects::ground, objects::window);
+		car::draw(objects::car, objects::window);
 
 		objects::window.display();
 	}
