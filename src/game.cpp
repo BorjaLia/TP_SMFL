@@ -32,6 +32,8 @@ namespace game
 	static void update();
 	static void draw();
 
+	static void collision();
+
 	namespace delta
 	{
 		sf::Clock clock;
@@ -82,7 +84,7 @@ namespace game //definiciones
 	static void update()
 	{
 		delta::updateDeltaT();
-
+		collision();
 		ground::update(objects::ground);
 		car::update(objects::car);
 	}
@@ -91,10 +93,25 @@ namespace game //definiciones
 	{
 		objects::window.clear();
 
-		//ground::draw(objects::ground, objects::window);
+		ground::draw(objects::ground, objects::window);
 		car::draw(objects::car, objects::window);
 
 		objects::window.display();
+	}
+
+	static void collision()
+	{
+		if (objects::car.transform.position.y > 500 - objects::car.collision.size.y)
+		{
+			objects::car.rigidBody.velocity.rotateDegree(180);
+			objects::car.rigidBody.velocity *= 0.25f;
+			std::cout << "out!\n";
+		}
+		if (objects::car.transform.position.y > 500 - (objects::car.collision.size.y*2))
+		{
+			std::cout << "force!\n";
+			rigidbody::AddForce(objects::car.rigidBody, { 0.0f,-globals::gravity * objects::car.rigidBody.mass * 5.0f});
+		}
 	}
 
 	namespace delta

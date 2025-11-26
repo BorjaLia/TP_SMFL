@@ -34,6 +34,15 @@
     <Filter Include="src\Game\Ground">
       <UniqueIdentifier>{4a23c297-2aea-4a18-8770-99a8a049d7e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Game\Objects">
+      <UniqueIdentifier>{c460285f-a25e-40ce-8744-661954361116}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Objects\Car">
+      <UniqueIdentifier>{22118cad-2a7f-452f-87ec-fc9dd752a12e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Objects\Car\Wheel">
+      <UniqueIdentifier>{7824c1b8-eac0-4e53-bc8a-33a86a4a131b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -63,6 +72,15 @@
     <ClCompile Include="src\irregular.cpp">
       <Filter>src\Math\Shape</Filter>
     </ClCompile>
+    <ClCompile Include="src\wheel.cpp">
+      <Filter>src\Game\Objects\Car\Wheel</Filter>
+    </ClCompile>
+    <ClCompile Include="src\car.cpp">
+      <Filter>src\Game\Objects\Car</Filter>
+    </ClCompile>
+    <ClCompile Include="src\transform.cpp">
+      <Filter>src\Game\Physics\Transform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">
@@ -91,6 +109,15 @@
     </ClInclude>
     <ClInclude Include="src\ground.h">
       <Filter>src\Game\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="src\regular.h">
+      <Filter>src\Math\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wheel.h">
+      <Filter>src\Game\Objects\Car\Wheel</Filter>
+    </ClInclude>
+    <ClInclude Include="src\car.h">
+      <Filter>src\Game\Objects\Car</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,12 +1,16 @@
 #pragma once
 
 #include "LLM_math.h"
-#include "SFML/Graphics.hpp"
 
-struct Transform
+namespace trans
 {
-	vec::Vector2 translation = vec::Vector2(0.0f,0.0f);
-	vec::Vector2 scale = vec::Vector2(0.0f, 0.0f);
+	struct  Transform
+	{
+		vec::Vector2 position = vec::Vector2(0.0f, 0.0f);
+		vec::Vector2 scale = vec::Vector2(0.0f, 0.0f);
 
-	float rotation = 0.0f;
-};
+		float rotation = 0;
+	};
+
+	void Translate(Transform& transform, vec::Vector2 delta);
+}

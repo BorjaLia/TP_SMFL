@@ -29,10 +29,10 @@
     <ClCompile Include="src\LLM_math.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\rigidbody.cpp" />
+    <ClCompile Include="src\transform.cpp" />
     <ClCompile Include="src\wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="regular.h" />
     <ClInclude Include="src\car.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\file_manager.h" />
@@ -41,6 +41,7 @@
     <ClInclude Include="src\ground.h" />
     <ClInclude Include="src\irregular.h" />
     <ClInclude Include="src\LLM_math.h" />
+    <ClInclude Include="src\regular.h" />
     <ClInclude Include="src\rigidbody.h" />
     <ClInclude Include="src\transform.h" />
     <ClInclude Include="src\wheel.h" />

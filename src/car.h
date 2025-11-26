@@ -1,17 +1,19 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 #include "rigidbody.h"
 #include "transform.h"
+#include "regular.h"
 
 namespace car
 {
 	struct Car
 	{
-		Rigibody rigidBody;
-		Transform transform;
+		rigidbody::Rigidbody rigidBody;
+		trans::Transform transform;
 
-		vec::Vector2 pos;
-		vec::Vector2 acceleration;
+		shape::Rectangle collision;
 	};
 
 	Car init();
