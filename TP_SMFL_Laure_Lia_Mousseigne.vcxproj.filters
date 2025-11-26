@@ -43,6 +43,24 @@
     <Filter Include="src\Game\Objects\Car\Wheel">
       <UniqueIdentifier>{7824c1b8-eac0-4e53-bc8a-33a86a4a131b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\UI">
+      <UniqueIdentifier>{0789f0ef-9d94-49c5-8eda-7fda4185564f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UI\Button">
+      <UniqueIdentifier>{818fd6dd-efe2-4443-8a71-371a66eb3704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Menus">
+      <UniqueIdentifier>{641a3598-6565-40f5-aa1e-d195b48e6724}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Menus\MainMenu">
+      <UniqueIdentifier>{743e396e-bf7f-4f93-999f-ab26c4bb6fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Menus\Credits">
+      <UniqueIdentifier>{fa0baa90-eb2e-4fc5-bdf3-2d49b72192ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UI\Label">
+      <UniqueIdentifier>{43731653-c594-40cb-8934-b1e57a32e163}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -81,6 +99,9 @@
     <ClCompile Include="src\transform.cpp">
       <Filter>src\Game\Physics\Transform</Filter>
     </ClCompile>
+    <ClCompile Include="src\main_menu.cpp">
+      <Filter>src\Game\Menus\MainMenu</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">
@@ -118,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="src\car.h">
       <Filter>src\Game\Objects\Car</Filter>
+    </ClInclude>
+    <ClInclude Include="src\main_menu.h">
+      <Filter>src\Game\Menus\MainMenu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
