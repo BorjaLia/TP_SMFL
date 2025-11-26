@@ -21,13 +21,15 @@
     <ClCompile Include="src\LLM_math.cpp">
       <Filter>src\Math</Filter>
     </ClCompile>
-    <ClCompile Include="file_manager.cpp" />
+    <ClCompile Include="src\file_manager.cpp">
+      <Filter>src\File</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">
       <Filter>src\Math</Filter>
     </ClInclude>
-    <ClInclude Include="file_manager.h">
+    <ClInclude Include="src\file_manager.h">
       <Filter>src\File</Filter>
     </ClInclude>
   </ItemGroup>

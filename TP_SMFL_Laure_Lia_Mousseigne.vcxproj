@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="file_manager.cpp" />
+    <ClCompile Include="src\file_manager.cpp" />
     <ClCompile Include="src\LLM_math.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="file_manager.h" />
+    <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\LLM_math.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

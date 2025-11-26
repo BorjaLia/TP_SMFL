@@ -39,8 +39,8 @@ namespace vec
 
 	private:
 
-		static bool isCartesianBool;
-		static bool isCircularBool;
+		bool isCartesianBool;
+		bool isCircularBool;
 
 	public:
 
