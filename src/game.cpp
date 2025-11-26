@@ -1,8 +1,9 @@
 #include "game.h"
 
-#include "globals.h"
-
 #include <SFML/Graphics.hpp>
+
+#include "globals.h"
+#include "ground.h"
 
 namespace game
 {
@@ -19,6 +20,7 @@ namespace game
 	namespace objects
 	{
 		sf::RenderWindow window;
+		ground::Ground ground;
 	}
 
 	static void game();
@@ -55,7 +57,10 @@ namespace game //definiciones
 			}
 
 			objects::window.clear();
+
 			//objects::window.draw();
+			ground::draw(objects::ground, objects::window);
+
 			objects::window.display();
 		}
 
@@ -64,7 +69,8 @@ namespace game //definiciones
 
 	static void init()
 	{
-		objects::window = sf::RenderWindow(sf::VideoMode({ 200, 200 }), "SFML works!");
+		objects::window = sf::RenderWindow(sf::VideoMode({ 1500, 820 }), "SFML works!");
+		objects::ground = ground::init();
 	}
 
 	static void update()

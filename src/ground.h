@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SFML/Graphics.hpp"
+
 #include "irregular.h"
 
 namespace ground
@@ -11,6 +13,7 @@ namespace ground
 		irregular::Irregular rightPart;
 	};
 
-	void init();
-	void update();
+	Ground init();
+	void update(Ground& ground);
+	void draw(Ground& ground, sf::RenderWindow& window);
 }

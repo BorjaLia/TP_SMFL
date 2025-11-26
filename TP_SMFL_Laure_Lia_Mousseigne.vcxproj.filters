@@ -60,6 +60,9 @@
     <ClCompile Include="src\ground.cpp">
       <Filter>src\Game\Ground</Filter>
     </ClCompile>
+    <ClCompile Include="src\irregular.cpp">
+      <Filter>src\Math\Shape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">

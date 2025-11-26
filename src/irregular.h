@@ -8,5 +8,8 @@ namespace irregular
 	struct Irregular
 	{
 		std::vector<vec::Vector2> points;
+		int pointAmount;
 	};
+
+	Irregular init(const vec::Vector2 points[], int pointAmount);;
 }
