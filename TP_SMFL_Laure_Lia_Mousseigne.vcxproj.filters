@@ -31,6 +31,9 @@
     <Filter Include="src\Math\Shape">
       <UniqueIdentifier>{a50cba79-ff66-4f16-ab44-f4c9befc82ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Game\Ground">
+      <UniqueIdentifier>{4a23c297-2aea-4a18-8770-99a8a049d7e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -53,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="src\globals.cpp">
       <Filter>src\Game\Globals</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ground.cpp">
+      <Filter>src\Game\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -79,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="src\irregular.h">
       <Filter>src\Math\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ground.h">
+      <Filter>src\Game\Ground</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -23,6 +23,7 @@
     <ClCompile Include="src\file_manager.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\globals.cpp" />
+    <ClCompile Include="src\ground.cpp" />
     <ClCompile Include="src\LLM_math.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\rigidbody.cpp" />
@@ -32,6 +33,7 @@
     <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\globals.h" />
+    <ClInclude Include="src\ground.h" />
     <ClInclude Include="src\irregular.h" />
     <ClInclude Include="src\LLM_math.h" />
     <ClInclude Include="src\rigidbody.h" />
