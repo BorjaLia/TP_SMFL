@@ -32,6 +32,7 @@
     <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\globals.h" />
+    <ClInclude Include="src\irregular.h" />
     <ClInclude Include="src\LLM_math.h" />
     <ClInclude Include="src\rigidbody.h" />
     <ClInclude Include="src\transform.h" />

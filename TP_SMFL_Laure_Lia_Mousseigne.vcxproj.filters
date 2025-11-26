@@ -25,6 +25,12 @@
     <Filter Include="src\Game\Physics\Transform">
       <UniqueIdentifier>{606ebd37-7902-4467-89b6-2b24e4b52125}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Game\Globals">
+      <UniqueIdentifier>{9bd79bbc-3844-47c6-94c5-13b18b4d231f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Math\Shape">
+      <UniqueIdentifier>{a50cba79-ff66-4f16-ab44-f4c9befc82ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -39,6 +45,15 @@
     <ClCompile Include="src\collision.cpp">
       <Filter>src\Game\Physics\Collisions</Filter>
     </ClCompile>
+    <ClCompile Include="src\game.cpp">
+      <Filter>src\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rigidbody.cpp">
+      <Filter>src\Game\Physics\Rigibody</Filter>
+    </ClCompile>
+    <ClCompile Include="src\globals.cpp">
+      <Filter>src\Game\Globals</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">
@@ -47,14 +62,23 @@
     <ClInclude Include="src\file_manager.h">
       <Filter>src\File</Filter>
     </ClInclude>
-    <ClInclude Include="src\rigibody.h">
-      <Filter>src\Game\Physics\Rigibody</Filter>
-    </ClInclude>
     <ClInclude Include="src\transform.h">
       <Filter>src\Game\Physics\Transform</Filter>
     </ClInclude>
     <ClInclude Include="src\collision.h">
       <Filter>src\Game\Physics\Collisions</Filter>
+    </ClInclude>
+    <ClInclude Include="src\game.h">
+      <Filter>src\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rigidbody.h">
+      <Filter>src\Game\Physics\Rigibody</Filter>
+    </ClInclude>
+    <ClInclude Include="src\globals.h">
+      <Filter>src\Game\Globals</Filter>
+    </ClInclude>
+    <ClInclude Include="src\irregular.h">
+      <Filter>src\Math\Shape</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
