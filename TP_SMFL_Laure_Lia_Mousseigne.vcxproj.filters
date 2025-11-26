@@ -4,10 +4,24 @@
     <Filter Include="src">
       <UniqueIdentifier>{c85ae5ee-7e78-45a4-8898-e63148822762}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Math">
+      <UniqueIdentifier>{2d4fbe9c-614e-4b7c-81b3-984804c35f58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game">
+      <UniqueIdentifier>{0fdf1962-248d-4db0-87f4-c5203dc055cf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="src\LLM_math.cpp">
+      <Filter>src\Math</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\LLM_math.h">
+      <Filter>src\Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
