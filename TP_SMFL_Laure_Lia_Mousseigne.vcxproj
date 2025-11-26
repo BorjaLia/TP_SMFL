@@ -30,6 +30,7 @@
     <ClCompile Include="src\rigidbody.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="regular.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\game.h" />
