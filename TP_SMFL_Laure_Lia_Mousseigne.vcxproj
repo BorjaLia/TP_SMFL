@@ -32,6 +32,7 @@
     <ClCompile Include="src\wheel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="regular.h" />
     <ClInclude Include="src\car.h" />
     <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\file_manager.h" />
