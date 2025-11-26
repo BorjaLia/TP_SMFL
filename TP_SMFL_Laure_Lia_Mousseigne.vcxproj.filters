@@ -13,6 +13,18 @@
     <Filter Include="src\File">
       <UniqueIdentifier>{0e694e29-3a70-4ac8-8001-6683693ca665}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Game\Physics">
+      <UniqueIdentifier>{18695702-b767-489e-a60f-f4ef5ed9c2ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Physics\Rigibody">
+      <UniqueIdentifier>{03f831a1-5245-472f-bfb3-9bfcb5cfbafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Physics\Collisions">
+      <UniqueIdentifier>{2663f5a2-ea6c-4524-8cc1-26e5f7c08452}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Game\Physics\Transform">
+      <UniqueIdentifier>{606ebd37-7902-4467-89b6-2b24e4b52125}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -31,6 +43,12 @@
     </ClInclude>
     <ClInclude Include="src\file_manager.h">
       <Filter>src\File</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rigibody.h">
+      <Filter>src\Game\Physics\Rigibody</Filter>
+    </ClInclude>
+    <ClInclude Include="src\transform.h">
+      <Filter>src\Game\Physics\Transform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -26,6 +26,8 @@
   <ItemGroup>
     <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\LLM_math.h" />
+    <ClInclude Include="src\rigibody.h" />
+    <ClInclude Include="src\transform.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

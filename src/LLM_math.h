@@ -33,7 +33,6 @@ namespace mth
 
 namespace vec
 {
-
 	struct Vector2
 	{
 
