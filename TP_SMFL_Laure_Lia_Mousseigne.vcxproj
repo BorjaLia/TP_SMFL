@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\collision.cpp" />
     <ClCompile Include="src\file_manager.cpp" />
     <ClCompile Include="src\LLM_math.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\collision.h" />
     <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\LLM_math.h" />
     <ClInclude Include="src\rigibody.h" />

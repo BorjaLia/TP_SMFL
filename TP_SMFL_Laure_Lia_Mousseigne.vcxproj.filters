@@ -36,6 +36,9 @@
     <ClCompile Include="src\file_manager.cpp">
       <Filter>src\File</Filter>
     </ClCompile>
+    <ClCompile Include="src\collision.cpp">
+      <Filter>src\Game\Physics\Collisions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">
@@ -49,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="src\transform.h">
       <Filter>src\Game\Physics\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="src\collision.h">
+      <Filter>src\Game\Physics\Collisions</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
