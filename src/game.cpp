@@ -85,7 +85,7 @@ namespace game //definiciones
 	{
 		delta::updateDeltaT();
 		collision();
-		ground::update(objects::ground);
+		ground::update(objects::ground, objects::car);
 		car::update(objects::car);
 	}
 

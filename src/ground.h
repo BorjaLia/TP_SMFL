@@ -3,6 +3,7 @@
 #include "SFML/Graphics.hpp"
 
 #include "irregular.h"
+#include "car.h"
 
 namespace ground
 {
@@ -24,6 +25,6 @@ namespace ground
 	};
 
 	Ground init();
-	void update(Ground& ground);
+	void update(Ground& ground, car::Car car);
 	void draw(Ground& ground, sf::RenderWindow& window);
 }

@@ -2,31 +2,8 @@
 
 #include "LLM_math.h"
 
+#include "collision.h"
 #include "globals.h"
-namespace rectangleTemp
-{
-	struct Rectangle
-	{
-		vec::Vector2 pos = { 500.f,0.f };
-		float width = 200.f;
-		float height = 55.f;
-	};
-
-	Rectangle rect;
-
-	static void update()
-	{
-		rect.pos.y += 100 * externs::deltaT;
-	}
-
-	static void draw(sf::RenderWindow& window)
-	{
-		sf::RectangleShape rectangle({ rect.width, rect.height });
-
-		rectangle.setPosition({ rect.pos.x, rect.pos.y });
-		window.draw(rectangle);
-	}
-}
 
 namespace ground
 {
@@ -42,6 +19,7 @@ namespace ground
 	{
 		{100,500},
 		{1500,500},
+		{1300,300}
 	};
 
 	static const vec::Vector2 preset2[] =
@@ -80,13 +58,13 @@ namespace ground
 	{
 		Ground newGround;
 
-		newGround.leftPart.shape = irregular::init(preset1, 2);
+		newGround.leftPart.shape = irregular::init(preset1, 3);
 		newGround.leftPart.canMove = true;
 
-		newGround.middlePart.shape = irregular::init(preset1, 2);
+		newGround.middlePart.shape = irregular::init(preset1, 3);
 		newGround.middlePart.canMove = false;
 
-		newGround.rightPart.shape = irregular::init(preset1, 2);
+		newGround.rightPart.shape = irregular::init(preset1, 3);
 		newGround.rightPart.canMove = false;
 
 		newGround.isLooping = false;
@@ -94,17 +72,9 @@ namespace ground
 		return newGround;
 	}
 
-	void update(Ground& ground)
+	void update(Ground& ground, car::Car car)
 	{
-		
-		struct Player //placeholder
-		{
-			vec::Vector2 pos;
-		};
-
-		Player player;
-
-		if (player.pos.x >= ground.rightPart.shape.points[0].x)
+		if (car.transform.position.x >= ground.rightPart.shape.points[0].x)
 		{
 			if (ground.leftPart.canMove)
 			{
@@ -121,7 +91,7 @@ namespace ground
 
 		if (ground.isLooping)
 		{
-			if (player.pos.x >= ground.leftPart.shape.points[0].x)
+			if (car.transform.position.x >= ground.leftPart.shape.points[0].x)
 			{
 				if (ground.middlePart.canMove)
 				{
@@ -130,7 +100,7 @@ namespace ground
 					ground.rightPart.canMove = true;
 				}
 			}
-			if (player.pos.x >= ground.middlePart.shape.points[0].x)
+			if (car.transform.position.x >= ground.middlePart.shape.points[0].x)
 			{
 				if (ground.rightPart.canMove)
 				{
@@ -140,9 +110,6 @@ namespace ground
 				}
 			}
 		}
-		
-		//Temp
-		rectangleTemp::update();
 	}
 
 	void draw(Ground& ground, sf::RenderWindow& window)
@@ -150,9 +117,6 @@ namespace ground
 		drawPart(ground.leftPart, window);
 		drawPart(ground.middlePart, window);
 		drawPart(ground.rightPart, window);
-
-		//Temp
-		rectangleTemp::draw(window);
 	}
 
 	static void drawPart(Part part, sf::RenderWindow& window)
