@@ -6,4 +6,6 @@ namespace externs
 
 	float screenWidth = 1500;
 	float screenHeight = 820;
+
+	sf::Font fonts[globals::maxFonts];
 }

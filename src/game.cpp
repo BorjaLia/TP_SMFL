@@ -6,6 +6,7 @@
 #include "globals.h"
 #include "ground.h"
 #include "car.h"
+#include "label.h"
 
 namespace game
 {
@@ -25,6 +26,7 @@ namespace game
 
 		ground::Ground ground;
 		car::Car car;
+		label::Label verText;
 	}
 
 	namespace scenes
@@ -83,6 +85,13 @@ namespace game //definiciones
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
 		objects::car = car::init();
+		std::string asd = "res/font/ARIAL.TTF";
+		if (!externs::fonts[0].openFromFile(asd.c_str()))
+		{
+			std::cout << "error!!! mirame!!";
+		}
+		
+		objects::verText = label::init(vec::Vector2{ 1000, 300 }, "ver 0.1", label::Fonts::Default, 100, sf::Color::White);
 	}
 
 	static void deinit()
@@ -170,6 +179,7 @@ namespace game //definiciones
 		{
 			ground::draw(objects::ground, objects::window);
 			car::draw(objects::car, objects::window);
+			label::draw(objects::verText, objects::window);
 			break;
 		}
 		case game::Scene::MainMenu:

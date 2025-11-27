@@ -1,8 +1,11 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 namespace globals
 {
 	const float gravity = 9.81f;
+	static const int maxFonts = 1;
 }
 
 namespace externs
@@ -11,4 +14,6 @@ namespace externs
 
 	extern float screenWidth;
 	extern float screenHeight;
+
+	extern sf::Font fonts[globals::maxFonts];
 }

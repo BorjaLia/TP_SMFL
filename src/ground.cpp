@@ -19,12 +19,12 @@ namespace ground
 
 	static const float startY = 500.f;
 
-	static const float randomRepeatAmount = 30.f;
+	static const float randomRepeatAmount = 20.f;
 	static const float randomScale1 = 5.f;
-	static const float randomScale2 = 2.f;
-	static const float randomPiScale = 0.4f;
+	static const float randomScale2 = 5.f;
+	static const float randomPiScale = 3.4f;
 	static const float factor1 = 5.4f;
-	static const float randomVariationY = 0.4f;
+	static const float randomVariationY = 4.4f;
 
 	Ground init()
 	{
