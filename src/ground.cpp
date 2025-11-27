@@ -116,7 +116,7 @@ namespace ground
 			for (int j = 1; j < maxPoints; j++)
 			{
 				pointsAux[j].y = startY;
-				pointsAux[j].x = partDistance * i + distBetweenPoints * j;
+				pointsAux[j].x = partDistance * i + distBetweenPoints * j * 12.5f;
 				pointsAux[j].y = randomizedY(pointsAux[j]);
 			}
 
@@ -133,6 +133,9 @@ namespace ground
 		for (int i = 0; i < randomRepeatAmount; i++)
 		{
 			point.y += sin(factor1 * -randomScale1* point.x) + sin(PI * -randomScale2 * point.x) * (randomVariationY * i);
+			//point.y += sin(factor1 * -randomScale2* point.x) + sin(PI * -randomScale1 * point.x) * (randomVariationY * i);
+
+			//point.y += 25;
 		}
 
 		return point.y;
