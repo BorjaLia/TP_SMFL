@@ -39,6 +39,7 @@
     <ClInclude Include="src\background.h" />
     <ClInclude Include="src\car.h" />
     <ClInclude Include="src\collision.h" />
+    <ClInclude Include="src\color.h" />
     <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\globals.h" />

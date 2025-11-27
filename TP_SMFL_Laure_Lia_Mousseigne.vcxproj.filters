@@ -67,6 +67,9 @@
     <Filter Include="src\Render\Parallax">
       <UniqueIdentifier>{d4566a76-8837-4ada-887c-c31f553ccd9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Render\Color">
+      <UniqueIdentifier>{77de8648-3f44-46c3-9d07-a8588af191f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="src\render.h">
       <Filter>src\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\color.h">
+      <Filter>src\Render\Color</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -84,13 +84,12 @@ namespace game //definiciones
 	static void init()
 	{
 		objects::roboto = sf::Font("res/font/Jumps Winter.ttf");
-		objects::window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(externs::screenWidth), static_cast<unsigned int>(externs::screenHeight) }), "SFML works!");
+		objects::window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(externs::screenWidth), static_cast<unsigned int>(externs::screenHeight) }), "Gil climb");
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
 		objects::car = car::init();
 		render::init();
-		
-		objects::verText = label::init(vec::Vector2{ 1000, 300 }, "Gil climb", objects::roboto, 100, sf::Color::Red);
+		objects::verText = label::init(vec::Vector2{ 1000, 300 }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 	}
 
 	static void deinit()
