@@ -4,7 +4,7 @@
 
 namespace label
 {
-	Label init(vec::Vector2 pos, std::string text, Fonts font, int fontSize, sf::Color color)
+	Label init(vec::Vector2 pos, std::string text, sf::Font& font, int fontSize, sf::Color color)
 	{
 		Label label;
 
@@ -17,7 +17,7 @@ namespace label
 		return label;
 	}
 
-	Label init(vec::Vector2 pos, char text, Fonts font, int fontSize, sf::Color color)
+	Label init(vec::Vector2 pos, char text, sf::Font& font, int fontSize, sf::Color color)
 	{
 		Label label;
 
@@ -32,7 +32,7 @@ namespace label
 
 	void draw(Label label, sf::RenderWindow& window)
 	{
-		sf::Text text = sf::Text(externs::fonts[static_cast<int>(label.font)]);
+		sf::Text text = sf::Text(label.font);
 		
 		text.setString(label.text.c_str());
 

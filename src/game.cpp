@@ -28,6 +28,7 @@ namespace game
 		ground::Ground ground;
 		car::Car car;
 		label::Label verText;
+		sf::Font roboto;
 	}
 
 	namespace scenes
@@ -82,19 +83,14 @@ namespace game //definiciones
 
 	static void init()
 	{
+		objects::roboto = sf::Font("res/font/Jumps Winter.ttf");
 		objects::window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(externs::screenWidth), static_cast<unsigned int>(externs::screenHeight) }), "SFML works!");
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
 		objects::car = car::init();
 		render::init();
-
-		std::string asd = "res/font/ARIAL.TTF";
-		if (!externs::fonts[0].openFromFile(asd.c_str()))
-		{
-			std::cout << "error!!! mirame!!";
-		}
 		
-		objects::verText = label::init(vec::Vector2{ 1000, 300 }, "ver 0.1", label::Fonts::Default, 100, sf::Color::White);
+		objects::verText = label::init(vec::Vector2{ 1000, 300 }, "Gil climb", objects::roboto, 100, sf::Color::Red);
 	}
 
 	static void deinit()

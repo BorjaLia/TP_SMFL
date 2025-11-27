@@ -8,6 +8,7 @@ namespace externs
 	float screenHeight = 820;
 
 	sf::Font fonts[globals::maxFonts];
+
 	sf::Texture placeholder = sf::Texture();
 
 	sf::Texture cloudTexture;

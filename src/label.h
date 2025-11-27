@@ -6,22 +6,17 @@
 
 namespace label
 {
-	enum class Fonts
-	{
-		Default
-	};
-
 	struct Label
 	{
 		vec::Vector2 pos;
 		std::string text;
-		Fonts font = Fonts::Default;
 		sf::Color color;
+		sf::Font font;
 		int fontSize = 0;
 	};
 
-	Label init(vec::Vector2 pos, std::string text, Fonts font, int fontSize, sf::Color color);
-	Label init(vec::Vector2 pos, char text, Fonts font, int fontSize, sf::Color color);
+	Label init(vec::Vector2 pos, std::string text, sf::Font& font, int fontSize, sf::Color color);
+	Label init(vec::Vector2 pos, char text, sf::Font& font, int fontSize, sf::Color color);
 	void draw(Label label, sf::RenderWindow& window);
 }
 
