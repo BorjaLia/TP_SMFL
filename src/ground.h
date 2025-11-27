@@ -15,11 +15,16 @@ namespace ground
 		bool canMove = false;
 	};
 
+	enum class PartName
+	{
+		Left,
+		Middle,
+		Right
+	};
+
 	struct Ground
 	{
-		Part leftPart;
-		Part middlePart;
-		Part rightPart;
+		Part parts[totalParts];
 
 		bool isLooping = true;
 	};

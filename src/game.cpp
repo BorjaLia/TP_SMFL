@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "collision.h"
 #include "globals.h"
 #include "ground.h"
 #include "car.h"
@@ -38,7 +39,8 @@ namespace game
 	static void update();
 	static void draw();
 
-	static void collision();
+	static void carCollision();
+	static void wheelCollision();
 
 	namespace delta
 	{
@@ -98,23 +100,23 @@ namespace game //definiciones
 		{
 		case game::Scene::Playing:
 		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-			{
-				objects::camera.move({ 0.0f,-100.0f * externs::deltaT });
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-			{
-				objects::camera.move({ -100.0f * externs::deltaT ,0.0f });
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-			{
-				objects::camera.move({ 0.0f,100.0f * externs::deltaT });
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-			{
-				objects::camera.move({ 100.0f * externs::deltaT ,0.0f });
-			}
-
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
+			//{
+			//	objects::camera.move({ 0.0f,-100.0f * externs::deltaT });
+			//}
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
+			//{
+			//	objects::camera.move({ -100.0f * externs::deltaT ,0.0f });
+			//}
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
+			//{
+			//	objects::camera.move({ 0.0f,100.0f * externs::deltaT });
+			//}
+			//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
+			//{
+			//	objects::camera.move({ 100.0f * externs::deltaT ,0.0f });
+			//}
+			//
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
 			{
 				objects::camera.zoom(1.0f + (externs::deltaT * 0.5f));
@@ -128,8 +130,8 @@ namespace game //definiciones
 
 
 			objects::window.setView(objects::camera);
-			collision();
-			ground::update(objects::ground);
+			carCollision();
+			ground::update(objects::ground, objects::car);
 			car::update(objects::car);
 			break;
 		}
@@ -197,18 +199,43 @@ namespace game //definiciones
 		objects::window.display();
 	}
 
-	static void collision()
+	static void carCollision()
 	{
 		if (objects::car.transform.position.y > 500 - objects::car.collision.size.y)
 		{
 			objects::car.rigidBody.velocity.rotateDegree(180);
-			objects::car.rigidBody.velocity *= 0.25f;
+			objects::car.rigidBody.velocity = 0.25f;
 			std::cout << "out!\n";
 		}
 		if (objects::car.transform.position.y > 500 - (objects::car.collision.size.y * 2))
 		{
 			std::cout << "force!\n";
 			rigidbody::AddForce(objects::car.rigidBody, { 0.0f,-globals::gravity * objects::car.rigidBody.mass * 5.0f });
+		}
+		wheelCollision();
+	}
+
+	static void wheelCollision()
+	{
+		objects::car.wheels[0].isGrounded = false;
+
+		for (int i = 0; i < objects::ground.parts[0].shape.pointAmount - 1; i++)
+		{
+			vec::Vector2 dir = objects::ground.parts[0].shape.points[i + 1] - objects::ground.parts[0].shape.points[i];
+			dir.normalize();
+
+			vec::Vector2 norm = { -dir.y,dir.x };
+
+			vec::Vector2 closestPoint;
+
+			closestPoint.x = objects::car.wheels[0].offset.x + 10 + norm.x * 10;
+			closestPoint.y = objects::car.wheels[0].offset.y + 10 + norm.y * 10;
+
+			if (coll::LineOnLine({ objects::car.wheels[0].offset.x, objects::car.wheels[0].offset.y }, closestPoint, objects::ground.parts[0].shape.points[i], objects::ground.parts[0].shape.points[i + 1]))
+			{
+				objects::car.wheels[0].isGrounded = true;
+
+			}
 		}
 	}
 

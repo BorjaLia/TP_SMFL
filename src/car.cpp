@@ -95,11 +95,14 @@ namespace car
 		{
 			rigidbody::AddForce(car.rigidBody, { -20.0f * car.rigidBody.mass, 0.0f });
 			rigidbody::AddTorque(car.rigidBody, 10.0f);
+			std::cout << "a";
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && car.wheels[0].isGrounded)
 		{
 			rigidbody::AddForce(car.rigidBody, { 20.0f * car.rigidBody.mass, 0.0f });
 			rigidbody::AddTorque(car.rigidBody, -10.0f);
+			std::cout << "d";
+
 		}
 	}
 }
