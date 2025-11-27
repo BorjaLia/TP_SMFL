@@ -16,4 +16,8 @@ namespace externs
 	extern float screenHeight;
 
 	extern sf::Font fonts[globals::maxFonts];
+	extern sf::Texture placeholder;
+
+	extern sf::Texture cloudTexture;
+	extern sf::Texture hillTexture;
 }

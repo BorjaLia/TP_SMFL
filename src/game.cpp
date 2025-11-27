@@ -7,6 +7,7 @@
 #include "ground.h"
 #include "car.h"
 #include "label.h"
+#include "render.h"
 
 namespace game
 {
@@ -62,7 +63,6 @@ namespace game //definiciones
 	static void game() //declaraciones
 	{
 		init();
-
 		update();
 
 		while (objects::window.isOpen())
@@ -86,6 +86,8 @@ namespace game //definiciones
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
 		objects::car = car::init();
+		render::init();
+
 		std::string asd = "res/font/ARIAL.TTF";
 		if (!externs::fonts[0].openFromFile(asd.c_str()))
 		{
@@ -115,10 +117,12 @@ namespace game //definiciones
 				car::reset(objects::car, { externs::screenWidth,externs::screenHeight / 3.0f });
 			}
 
+			render::update();
 			updateCamera();
 			carCollision();
 			ground::update(objects::ground, objects::car);
 			car::update(objects::car);
+
 			break;
 		}
 		case game::Scene::MainMenu:
@@ -148,15 +152,17 @@ namespace game //definiciones
 
 	static void draw()
 	{
-		objects::window.clear();
+		objects::window.clear(sf::Color(135, 206, 235));
 
 		switch (scenes::currentScene)
 		{
 		case game::Scene::Playing:
 		{
+			render::draw(objects::window);
 			ground::draw(objects::ground, objects::window);
 			car::draw(objects::car, objects::window);
 			label::draw(objects::verText, objects::window);
+
 			break;
 		}
 		case game::Scene::MainMenu:
@@ -192,11 +198,11 @@ namespace game //definiciones
 		{
 			//objects::car.rigidBody.velocity.rotateDegree(180);
 			//objects::car.rigidBody.velocity = 0.25f;
-			std::cout << "out!\n";
+			//std::cout << "out!\n";
 		}
 		if (objects::car.transform.position.y > 500 - (objects::car.collision.size.y * 2))
 		{
-			std::cout << "force!\n";
+			//std::cout << "force!\n";
 			//rigidbody::AddForce(objects::car.rigidBody, { 0.0f,-globals::gravity * objects::car.rigidBody.mass * 5.0f });
 		}
 		wheelCollision();
