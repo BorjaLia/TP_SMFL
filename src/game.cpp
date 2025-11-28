@@ -653,33 +653,6 @@ namespace game //definiciones
 
 	static void updateCamera()
 	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
-		{
-			objects::camera.move({ -100.0f * externs::deltaT ,0.0f });
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
-		{
-			objects::camera.move({ 100.0f * externs::deltaT ,0.0f });
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
-		{
-			objects::cameraOffset -= externs::deltaT * 500.0f;
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
-		{
-			objects::cameraOffset += externs::deltaT * 500.0f;
-		}
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
-		{
-			objects::camera.zoom(1.0f + (externs::deltaT * 0.5f));
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
-		{
-			objects::camera.zoom(1.0f - (externs::deltaT * 0.5f));
-		}
-
 		objects::camera.move({ ((objects::cameraOffset + objects::car.transform.position.x) - objects::camera.getCenter().x) * 5.0f * externs::deltaT ,(objects::car.transform.position.y - objects::camera.getCenter().y) * 5.0f * externs::deltaT });
 
 		objects::window.setView(objects::camera);
