@@ -65,45 +65,6 @@ namespace ground
 				ground.parts[static_cast<int>(PartName::Left)].canMove = true;
 			}
 		}
-
-		/*
-		if (car.transform.position.x >= ground.parts[static_cast<int>(PartName::Right)].shape.points[0].x)
-		{
-			if (ground.parts[static_cast<int>(PartName::Left)].canMove)
-			{
-				movePart(ground.parts[static_cast<int>(PartName::Left)]);
-				ground.parts[static_cast<int>(PartName::Left)].canMove = false;
-				ground.parts[static_cast<int>(PartName::Middle)].canMove = true;
-			}
-
-			if (!ground.isLooping)
-			{
-				ground.isLooping = true;
-			}
-		}
-
-		if (ground.isLooping)
-		{
-			if (car.transform.position.x >= ground.parts[static_cast<int>(PartName::Left)].shape.points[0].x)
-			{
-				if (ground.parts[static_cast<int>(PartName::Middle)].canMove)
-				{
-					movePart(ground.parts[static_cast<int>(PartName::Middle)]);
-					ground.parts[static_cast<int>(PartName::Middle)].canMove = false;
-					ground.parts[static_cast<int>(PartName::Right)].canMove = true;
-				}
-			}
-			if (car.transform.position.x >= ground.parts[static_cast<int>(PartName::Middle)].shape.points[0].x)
-			{
-				if (ground.parts[static_cast<int>(PartName::Right)].canMove)
-				{
-					movePart(ground.parts[static_cast<int>(PartName::Right)]);
-					ground.parts[static_cast<int>(PartName::Right)].canMove = false;
-					ground.parts[static_cast<int>(PartName::Left)].canMove = true;
-				}
-			}
-		}
-		*/
 	}
 
 	void draw(Ground& ground, sf::RenderWindow& window)
