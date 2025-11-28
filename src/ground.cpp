@@ -14,7 +14,7 @@ namespace ground
 namespace ground
 {
 	static const float distBetweenPoints = 15.f;
-	static const int maxPoints = 30;
+	static const int maxPoints = 300;
 	static const float commonHeight = 500;
 
 	static const float distanceBetweenParts = distBetweenPoints * (maxPoints - 1) * 12.5f;
