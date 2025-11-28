@@ -20,4 +20,9 @@ namespace externs
 
 	extern sf::Texture cloudTexture;
 	extern sf::Texture hillTexture;
+
+	extern sf::Texture carTexture;
+	extern sf::Texture wheelTexture;
+
+	extern sf::Texture driverSprite;
 }
