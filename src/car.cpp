@@ -12,6 +12,8 @@ namespace car
 	{
 		Car car;
 
+		car.isAlive = true;
+
 		car.accelerateKey = sf::Keyboard::Key::D;
 		car.brakeKey = sf::Keyboard::Key::A;
 
@@ -30,6 +32,9 @@ namespace car
 
 		float halfWidth = car.collision.size.x / 2.0f;
 		float halfHeight = car.collision.size.y / 2.0f;
+		
+		car.deathCollision.pos = { 0.0f,-halfHeight};
+		car.deathCollision.size = car.collision.size * 0.5f;
 
 		wheel::Wheel wheel1;
 		wheel::Wheel wheel2;
@@ -39,7 +44,7 @@ namespace car
 		float wheelRestLength = 25.0f;
 		float wheelMaxDistance = 50.0f;
 
-		vec::Vector2 stiffness = { 2500.0f, 75.0f };
+		vec::Vector2 stiffness = { 2500.0f, 100.0f };
 		vec::Vector2 damping = { 100.0f, 50.0f };
 
 		float visualAnchorY = halfHeight - 15.0f;
@@ -91,7 +96,6 @@ namespace car
 		wheel2.sprite.setTexture(externs::wheelTexture, true);
 		wheel2.sprite.setOrigin({ wheelTexSize.x / 2.0f, wheelTexSize.y / 2.0f });
 		wheel2.sprite.setScale({ wheelDiameter / static_cast<float>(wheelTexSize.x), wheelDiameter / static_cast<float>(wheelTexSize.y) });
-
 
 		car.wheels.push_back(wheel1);
 		car.wheels.push_back(wheel2);
@@ -171,6 +175,8 @@ namespace car
 
 	void reset(Car& car, vec::Vector2 position)
 	{
+		car.isAlive = true;
+
 		car.transform.position = position;
 		car.transform.rotation = 0.0f;
 
@@ -198,7 +204,12 @@ namespace car
 
 	static void manageInput(Car& car)
 	{
-		float torquePower = 80000.0f;
+		if (!car.isAlive)
+		{
+			return;
+		}
+
+		float torquePower = 120000.0f;
 		float drivePower = 200.0f;
 
 		vec::Vector2 forwardDir = { 1.0f, 0.0f };
@@ -232,7 +243,7 @@ namespace car
 
 	static void updateSuspension(Car& car)
 	{
-		for (int i = 0; i < (int)car.wheels.size(); i++)
+		for (int i = 0; i < static_cast<int>(car.wheels.size()); i++)
 		{
 			wheel::Wheel& w = car.wheels[i];
 
@@ -250,6 +261,5 @@ namespace car
 			rigidbody::AddForceAtPosition(car.rigidBody, forceOnWheel * -1.0f, mountPosWorld, car.transform.position);
 
 		}
-
 	}
 }

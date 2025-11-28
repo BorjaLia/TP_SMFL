@@ -18,4 +18,9 @@ namespace externs
 	sf::Texture wheelTexture;
 
 	sf::Texture driverSprite;
+
+	sf::SoundBuffer engineBuffer;
+	sf::Sound engineSound{ engineBuffer };
+
+	sf::Music backgroundMusic;
 }

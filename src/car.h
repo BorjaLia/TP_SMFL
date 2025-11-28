@@ -6,6 +6,7 @@
 #include "rigidbody.h"
 #include "transform.h"
 #include "regular.h"
+#include "collision.h"
 
 namespace car
 {
@@ -36,8 +37,13 @@ namespace car
 		rigidbody::Rigidbody rigidBody;
 
 		shape::Rectangle collision;
+		shape::Rectangle deathCollision;
 
 		std::vector<wheel::Wheel> wheels;
+
+		int score = 0;
+
+		bool isAlive = false;
 
 		sf::Keyboard::Key accelerateKey;
 		sf::Keyboard::Key brakeKey;
