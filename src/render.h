@@ -1,9 +1,11 @@
 #pragma once
+
 #include "background.h"
+#include "car.h"
 
 namespace render
 {
-	void init();
-	void update();
+	void init(car::Car& car);
+	void update(car::Car& car);
 	void draw(sf::RenderWindow& window);
 }

@@ -13,4 +13,9 @@ namespace externs
 
 	sf::Texture cloudTexture;
 	sf::Texture hillTexture;
+
+	sf::Texture carTexture;
+	sf::Texture wheelTexture;
+
+	sf::Texture driverSprite;
 }
