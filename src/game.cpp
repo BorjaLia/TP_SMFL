@@ -386,6 +386,8 @@ namespace game //definiciones
 		static void updateDeltaT()
 		{
 			externs::deltaT = delta::clock.restart().asSeconds();
+
+			mth::Clamp(externs::deltaT,0.0f,0.1f);
 		}
 	}
 

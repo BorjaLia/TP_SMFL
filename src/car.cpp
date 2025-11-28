@@ -21,20 +21,20 @@ namespace car
 		car.rigidBody.velocity = { 0.0f, 0.0f };
 		car.rigidBody.angularVelocity = 0.0f;
 		car.rigidBody.torque = 0.0f;
-		car.rigidBody.angularDamping = 5.0f;
+		car.rigidBody.angularDamping = 1.0f;
 
 		car.transform.rotation = 0.0f;
-		car.transform.scale = { 1.0f, 1.0f };
+		car.transform.scale = { 100.0f, 50.0f };
 		car.transform.position = { (externs::screenWidth / 2.0f) , (externs::screenHeight / 3.0f) };
 
 		car.collision.pos = { 0.0f,0.0f };
-		car.collision.size = { 100.0f, 50.0f };
+		car.collision.size = { 75.0f, 30.0f };
 
-		float halfWidth = car.collision.size.x / 2.0f;
-		float halfHeight = car.collision.size.y / 2.0f;
+		float halfWidth = car.transform.scale.x / 2.0f;
+		float halfHeight = car.transform.scale.y / 2.0f;
 		
-		car.deathCollision.pos = { 0.0f,-halfHeight};
-		car.deathCollision.size = car.collision.size * 0.5f;
+		car.deathCollision.pos = { 0.0f,- 1.5f * halfHeight};
+		car.deathCollision.size = { car.collision.size.x * 0.5f, 2.0f * car.collision.size.y };
 
 		wheel::Wheel wheel1;
 		wheel::Wheel wheel2;
@@ -100,7 +100,9 @@ namespace car
 		car.wheels.push_back(wheel1);
 		car.wheels.push_back(wheel2);
 
-		car.sprite.setPosition(sf::Vector2f(car.collision.size.x, car.collision.size.y));
+		car.sprite.setPosition(sf::Vector2f(car.transform.scale.x, car.transform.scale.y));
+
+		reset(car);
 
 		return car;
 	}
@@ -110,6 +112,15 @@ namespace car
 		if (car.transform.position.y > externs::screenHeight)
 		{
 			//reset(car, { car.transform.position.x,externs::screenHeight / 3.0f });
+		}
+
+		if (car.wheels[0].isGrounded || car.wheels[1].isGrounded)
+		{
+			car.rigidBody.angularDamping = 5.0f;
+		}
+		else
+		{
+			car.rigidBody.angularDamping = 0.1f;
 		}
 
 		manageInput(car);
@@ -146,17 +157,22 @@ namespace car
 
 		car.driverSprite.setRotation(driverAngle);
 
+		if (!car.isAlive)
+		{
+			car.driverSprite.setColor(sf::Color(192,0,0));
+		}
+
 		window.draw(car.driverSprite);
 
-		car.sprite.setOrigin({ car.collision.size.x / 2.0f, car.collision.size.y / 2.0f });
+		car.sprite.setOrigin({ car.transform.scale.x / 2.0f, car.transform.scale.y / 2.0f });
 		car.sprite.setPosition({ car.transform.position.x, car.transform.position.y });
 
 		sf::Vector2u texSize = externs::carTexture.getSize();
 
 		car.sprite.setOrigin({ texSize.x / 2.0f, texSize.y / 2.0f });
 
-		float scaleX = car.collision.size.x / static_cast<float>(texSize.x);
-		float scaleY = car.collision.size.y / static_cast<float>(texSize.y);
+		float scaleX = car.transform.scale.x / static_cast<float>(texSize.x);
+		float scaleY = car.transform.scale.y / static_cast<float>(texSize.y);
 
 		car.sprite.setScale({ scaleX, scaleY });
 
@@ -167,15 +183,96 @@ namespace car
 		for (int i = 0; i < car.wheels.size(); i++)
 		{
 			car.wheels[i].sprite.setPosition({ car.wheels[i].transform.position.x, car.wheels[i].transform.position.y });
-			car.wheels[i].sprite.setRotation(sf::degrees(car.wheels[i].transform.rotation));
+			car.wheels[i].sprite.setRotation(sf::radians(car.wheels[i].transform.rotation));
 
 			window.draw(car.wheels[i].sprite);
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::F1))
+		{
+			sf::RectangleShape rectangle({ car.collision.size.x, car.collision.size.y });
+
+			rectangle.setOrigin({ car.collision.size.x / 2.0f, car.collision.size.y / 2.0f });
+			rectangle.setPosition({ car.transform.position.x, car.transform.position.y });
+
+			sf::Angle devAngle = sf::radians(car.transform.rotation);
+			rectangle.setRotation(devAngle);
+
+			window.draw(rectangle);
+
+			vec::Vector2 deathCollisionCorrected = car.deathCollision.pos;
+
+			deathCollisionCorrected.toCircular();
+			deathCollisionCorrected.y = car.transform.rotation + mth::DegreeToRadian(-90);
+			deathCollisionCorrected.toCartesian();
+
+			sf::RectangleShape rectangleDeath({ car.deathCollision.size.x, car.deathCollision.size.y });
+
+			rectangleDeath.setOrigin({ car.deathCollision.size.x / 2.0f, car.deathCollision.size.y / 2.0f });
+			rectangleDeath.setPosition({ car.transform.position.x + deathCollisionCorrected.x, car.transform.position.y + deathCollisionCorrected.y });
+			
+			sf::Angle angleDeath = sf::radians(car.transform.rotation);
+			rectangleDeath.setRotation(angleDeath);
+
+			rectangleDeath.setFillColor(sf::Color::Red);
+
+			window.draw(rectangleDeath);
+
+			coll::RectCorners corners = coll::GetWorldCorners(car.collision, car.transform);
+			vec::Vector2 points[4] = { corners.tl, corners.tr, corners.br, corners.bl };
+
+			for (int i = 0; i < 4; i++)
+			{
+				sf::CircleShape debugDot(3.0f);
+				debugDot.setOrigin({ 3.0f, 3.0f });
+				debugDot.setFillColor(sf::Color::Red);
+				debugDot.setPosition({ points[i].x, points[i].y });
+				window.draw(debugDot);
+			}
+
+			coll::RectCorners deathCorners = coll::GetWorldCorners(car.deathCollision, car.transform);
+			vec::Vector2 dPoints[4] = { deathCorners.tl, deathCorners.tr, deathCorners.br, deathCorners.bl };
+
+			for (int i = 0; i < 4; i++)
+			{
+				sf::CircleShape debugDot(3.0f);
+				debugDot.setOrigin({ 3.0f, 3.0f });
+				debugDot.setFillColor(sf::Color::Yellow);
+				debugDot.setPosition({ dPoints[i].x, dPoints[i].y });
+				window.draw(debugDot);
+			}
+
+			for (int i = 0; i < car.wheels.size(); i++)
+			{
+				sf::CircleShape circle(car.wheels[i].collision.radius);
+
+				circle.setOrigin({ car.wheels[i].collision.radius, car.wheels[i].collision.radius });
+
+				circle.setPosition({ car.wheels[i].transform.position.x, car.wheels[i].transform.position.y });
+
+				circle.setRotation(sf::degrees(car.wheels[i].transform.rotation));
+
+				if (car.wheels[i].isGrounded)
+				{
+					circle.setFillColor(sf::Color::Cyan);
+				}
+
+				window.draw(circle);
+			}
+
+			sf::CircleShape com(5.0f);
+			com.setOrigin({ 5.0f, 5.0f });
+			com.setFillColor(sf::Color::Magenta);
+			com.setPosition({ car.transform.position.x, car.transform.position.y });
+			window.draw(com);
 		}
 	}
 
 	void reset(Car& car, vec::Vector2 position)
 	{
 		car.isAlive = true;
+
+		car.driverSprite.setColor(sf::Color::White);
 
 		car.transform.position = position;
 		car.transform.rotation = 0.0f;
@@ -209,8 +306,8 @@ namespace car
 			return;
 		}
 
-		float torquePower = 120000.0f;
-		float drivePower = 200.0f;
+		float torquePower = 100000.0f;
+		float drivePower = 250.0f;
 
 		vec::Vector2 forwardDir = { 1.0f, 0.0f };
 		forwardDir = forwardDir.rotated(car.transform.rotation);
@@ -255,6 +352,8 @@ namespace car
 			vec::Vector2 anchorVel = car.rigidBody.velocity;
 			anchorVel.x += -car.rigidBody.angularVelocity * mountOffset.y;
 			anchorVel.y += car.rigidBody.angularVelocity * mountOffset.x;
+
+			w.transform.rotation += mth::DegreeToRadian( (anchorVel.x > 1 ? 1.0f : -1.0f) * anchorVel.magnitude() * externs::deltaT);
 
 			vec::Vector2 forceOnWheel = rigidbody::ApplySpring(w.rigidBody, w.transform, w.suspension, anchorVel, car.transform.rotation);
 

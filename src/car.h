@@ -57,5 +57,5 @@ namespace car
 	Car init();
 	void update(Car& car);
 	void draw(Car& car, sf::RenderWindow& window);
-	void reset(Car& car, vec::Vector2 position);
+	void reset(Car& car, vec::Vector2 position = { externs::screenWidth,externs::screenHeight / 4.0f });
 }
