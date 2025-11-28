@@ -4,7 +4,7 @@
 
 namespace globals
 {
-	const float gravity = 9.81f;
+	const float gravity = 98.1f;
 	static const int maxFonts = 1;
 }
 

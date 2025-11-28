@@ -252,7 +252,7 @@ namespace game //definiciones
 						vec::Vector2 remove = normal * velAlongNormal;
 						objects::car.wheels[j].rigidBody.velocity = objects::car.wheels[j].rigidBody.velocity - remove;
 
-						objects::car.wheels[j].rigidBody.velocity.x *= 0.9f;
+						//objects::car.wheels[j].rigidBody.velocity.x *= 0.9f;
 					}
 				}
 			}
@@ -287,7 +287,7 @@ namespace game //definiciones
 			objects::camera.zoom(1.0f - (externs::deltaT * 0.5f));
 		}
 
-		objects::camera.move({ ((1.25f * objects::car.transform.position.x) - objects::camera.getCenter().x) * 5.0f * externs::deltaT ,(objects::car.transform.position.y - objects::camera.getCenter().y) * 5.0f * externs::deltaT });
+		objects::camera.move({ (((0.25f * externs::screenWidth) + objects::car.transform.position.x) - objects::camera.getCenter().x) * 5.0f * externs::deltaT ,(objects::car.transform.position.y - objects::camera.getCenter().y) * 5.0f * externs::deltaT });
 
 		objects::window.setView(objects::camera);
 	}
