@@ -20,6 +20,7 @@ namespace game
 		MainMenu,
 		Credits,
 		Rules,
+		Death,
 		Exit
 	};
 
@@ -70,6 +71,12 @@ namespace game
 		button::Button pause;
 		button::Button pauseBack;
 		button::Button retry;
+
+		label::Label deathTitle;
+		label::Label deathScoreLabel;
+		label::Label restartLabel;
+		button::Button deathMenu;
+		button::Button deathExit;
 
 		button::Button play;
 		button::Button credits;
@@ -143,6 +150,7 @@ namespace game //definiciones
 		std::string pauseText = "Pause";
 		std::string pauseBackText = "Menu";
 		std::string retryText = "Retry";
+		std::string menu = "Menu";
 		std::string playText = "Play";
 		std::string creditsText = "Credits";
 		std::string rulesText = "Rules";
@@ -166,6 +174,9 @@ namespace game //definiciones
 		std::string rulesText6 = "-A: Accelerate left";
 		std::string rulesText7 = "-D: Accelerate right";
 		std::string rulesText8 = "-ESC: Pause";
+
+		std::string deathTitleStr = "YOU DIED";
+		std::string restartStr = "Press 'R' to Restart";
 
 		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 400.0f, 100.0f, 50.0f, playText);
 
@@ -202,6 +213,13 @@ namespace game //definiciones
 		objects::rulesText[static_cast<int>(RulesText::MoveLeft)] = label::init({ externs::screenWidth / 2.f - 100.f, 550.f }, rulesText6, objects::roboto, 15, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
 		objects::rulesText[static_cast<int>(RulesText::MoveRight)] = label::init({ externs::screenWidth / 2.f - 100.f, 600.f }, rulesText7, objects::roboto, 15, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
 		objects::rulesText[static_cast<int>(RulesText::Pause)] = label::init({ externs::screenWidth / 2.f - 100.f, 650.f }, rulesText8, objects::roboto, 15, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
+
+		objects::deathMenu = button::init(externs::screenWidth / 2.0f - 50.0f, 600.0f, 100.0f, 50.0f, menu);
+		objects::deathExit = button::init(externs::screenWidth / 2.0f - 50.0f, 700.0f, 100.0f, 50.0f, exitText);
+
+		objects::deathTitle = label::init({ externs::screenWidth / 2.f - 200.f, 150.f }, deathTitleStr, objects::roboto, 80, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::restartLabel = label::init({ externs::screenWidth / 2.f - 200.f, 450.f }, restartStr, objects::roboto, 30, color::colors[static_cast<int>(color::ColorsName::DarkWhite)]);
+		objects::deathScoreLabel = label::init({ externs::screenWidth / 2.f - 100.f, 300.f }, "", objects::roboto, 40, color::colors[static_cast<int>(color::ColorsName::MediumWhite)]);
 
 		objects::verText = label::init(vec::Vector2{ externs::screenWidth / 3.0f, 10.0f }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 
@@ -326,6 +344,37 @@ namespace game //definiciones
 
 			break;
 		}
+		case game::Scene::Death:
+		{
+
+			std::string scoreStr = "Final Score: " + std::to_string(static_cast<int>(objects::car.score));
+
+			objects::deathScoreLabel.text = scoreStr;
+			objects::deathScoreLabel.pos = { externs::screenWidth / 2.f - 170.f, 300.f };
+
+			button::update(objects::window, objects::deathMenu);
+			button::update(objects::window, objects::deathExit);
+
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
+			{
+				car::reset(objects::car, { externs::screenWidth, externs::screenHeight / 3.0f });
+				scenes::nextScene = Scene::Playing;
+				sound::init();
+			}
+
+			if (objects::deathMenu.clicked)
+			{
+				car::reset(objects::car, { externs::screenWidth, externs::screenHeight / 3.0f });
+				scenes::nextScene = Scene::MainMenu;
+			}
+
+			if (objects::deathExit.clicked)
+			{
+				objects::window.close();
+			}
+
+			break;
+		}
 		case game::Scene::Exit:
 		{
 
@@ -365,6 +414,17 @@ namespace game //definiciones
 
 			objects::window.setView(currentView);
 
+				objects::window.draw(screen);
+			}
+
+			sf::View currentView = objects::window.getView();
+
+			objects::window.setView(objects::window.getDefaultView());
+
+			car::drawScore(objects::car, objects::window, objects::roboto);
+
+			objects::window.setView(currentView);
+
 			break;
 		}
 		case game::Scene::MainMenu:
@@ -397,6 +457,22 @@ namespace game //definiciones
 			{
 				label::draw(objects::rulesText[i], objects::window);
 			}
+
+			break;
+		}
+		case game::Scene::Death:
+		{
+
+			objects::window.setView(objects::window.getDefaultView());
+
+			objects::window.clear(sf::Color(50, 0, 0));
+
+			label::draw(objects::deathTitle, objects::window);
+			label::draw(objects::deathScoreLabel, objects::window);
+			label::draw(objects::restartLabel, objects::window);
+
+			button::draw(objects::window, objects::deathMenu, objects::roboto);
+			button::draw(objects::window, objects::deathExit, objects::roboto);
 
 			break;
 		}
@@ -491,6 +567,7 @@ namespace game //definiciones
 			if (externs::deathSound.getStatus() != sf::SoundSource::Status::Playing)
 			{
 				externs::deathSound.play();
+				scenes::nextScene = Scene::Death;
 			}
 
 			objects::car.isAlive = false;

@@ -289,7 +289,12 @@ namespace car
 		car.rigidBody.angularVelocity = 0.0f;
 		car.rigidBody.force = { 0.0f, 0.0f };
 		car.rigidBody.torque = 0.0f;
+	
 		car.score = 0.0f;
+		car.distanceScore = 0.0f;
+		car.airScore = 0.0f;
+		car.airTricks = 0;
+		car.airTime = 0.0f;
 
 		for (int i = 0; i < car.wheels.size(); i++)
 		{
@@ -370,9 +375,13 @@ namespace car
 			return;
 		}
 
-		if (car.transform.position.x / 500.0f > car.distanceScore)
+		float startX = externs::screenWidth / 2.0f;
+
+		float currentDist = (car.transform.position.x - startX) / 500.0f;
+
+		if (currentDist > car.distanceScore)
 		{
-			car.distanceScore = car.transform.position.x / 500.0f;
+			car.distanceScore = currentDist;
 		}
 
 		if (!car.wheels[0].isGrounded && !car.wheels[1].isGrounded)
@@ -380,9 +389,7 @@ namespace car
 			car.airTime += externs::deltaT;
 
 			float rotationDelta = car.transform.rotation - car.liftAngle;
-
 			float absRotation = mth::Abs(rotationDelta);
-
 			float rotationUnit = PI * 2.0f;
 
 			int currentTricks = static_cast<int>(absRotation / rotationUnit);
@@ -391,9 +398,7 @@ namespace car
 			{
 				std::cout << "Flip! " << currentTricks << "\n";
 				externs::trickSound.play();
-
 				static float pitch = 1.0f - ((currentTricks - 1) * 0.25f);
-
 				externs::engineSound.setPitch(pitch);
 			}
 
@@ -413,6 +418,7 @@ namespace car
 
 			car.liftAngle = car.transform.rotation;
 		}
+
 		car.score = car.distanceScore + car.airScore;
 	}
 
