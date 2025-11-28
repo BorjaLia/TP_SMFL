@@ -326,7 +326,7 @@ namespace game //definiciones
 
 			if (!externs::backgroundMusic.openFromFile("res/sound/music.ogg"))
 			{
-				std::cout << "Error loading music";
+				std::cout << "Error: loading music";
 			}
 
 			externs::backgroundMusic.setLooping(true);
