@@ -32,6 +32,15 @@ namespace externs
 	extern sf::SoundBuffer engineBuffer;
 	extern sf::Sound engineSound;
 
+	extern sf::SoundBuffer trickBuffer;
+	extern sf::Sound trickSound;
+
+	extern sf::SoundBuffer deathBuffer;
+	extern sf::Sound deathSound;
+
+	extern sf::SoundBuffer clapBuffer;
+	extern sf::Sound clapSound;
+
 	extern sf::Music backgroundMusic;
 
 	extern sf::Font font;

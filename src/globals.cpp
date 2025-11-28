@@ -24,6 +24,15 @@ namespace externs
 	sf::SoundBuffer engineBuffer;
 	sf::Sound engineSound{ engineBuffer };
 
+	sf::SoundBuffer trickBuffer;
+	sf::Sound trickSound{ trickBuffer };
+
+	sf::SoundBuffer deathBuffer;
+	sf::Sound deathSound{ deathBuffer };
+
+	sf::SoundBuffer clapBuffer;
+	sf::Sound clapSound{ clapBuffer };
+
 	sf::Music backgroundMusic;
 
 	sf::Font font;
