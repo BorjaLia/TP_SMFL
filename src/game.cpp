@@ -2,6 +2,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
+#include <string>
 
 #include "collision.h"
 #include "globals.h"
@@ -9,6 +10,7 @@
 #include "car.h"
 #include "label.h"
 #include "render.h"
+#include "button.h"
 
 namespace game
 {
@@ -31,12 +33,16 @@ namespace game
 		car::Car car = car::Car();
 		label::Label verText;
 		sf::Font roboto;
+
+		button::Button play;
+		button::Button credits;
+		button::Button exit;
 	}
 
 	namespace scenes
 	{
-		static Scene currentScene = Scene::Playing;
-		static Scene nextScene = Scene::Playing;
+		static Scene currentScene = Scene::MainMenu;
+		static Scene nextScene = Scene::MainMenu;
 	}
 
 	static void game();
@@ -92,13 +98,21 @@ namespace game //definiciones
 
 	static void init()
 	{
+		std::string playText = "Play";
+		std::string creditsText = "Credits";
+		std::string exitText = "Exit";
+
+		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, playText);
+		objects::credits = button::init(externs::screenWidth / 2.0f - 50.0f, 600.0f, 100.0f, 50.0f, creditsText);
+		objects::exit = button::init(externs::screenWidth / 2.0f - 50.0f, 700.0f, 100.0f, 50.0f, exitText);
+
 		sound::init();
 		objects::roboto = sf::Font("res/font/Jumps Winter.ttf");
 		objects::window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(externs::screenWidth), static_cast<unsigned int>(externs::screenHeight) }), "Gil climb");
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
 		render::init(objects::car);
-		objects::verText = label::init(vec::Vector2{ 1000, 300 }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::verText = label::init(vec::Vector2{ externs::screenWidth / 3.0f, 10.0f }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 	}
 
 	static void deinit()
@@ -132,6 +146,25 @@ namespace game //definiciones
 		}
 		case game::Scene::MainMenu:
 		{
+			button::update(objects::window, objects::play);
+			button::update(objects::window, objects::credits);
+			button::update(objects::window, objects::exit);
+
+			if (objects::play.clicked)
+			{
+				scenes::nextScene = Scene::Playing;
+				sound::init();
+			}
+
+			if (objects::credits.clicked)
+			{
+				scenes::nextScene = Scene::Credits;
+			}
+
+			if (objects::exit.clicked)
+			{
+				objects::window.close();
+			}
 
 			break;
 		}
@@ -166,12 +199,21 @@ namespace game //definiciones
 			render::draw(objects::window);
 			ground::draw(objects::ground, objects::window);
 			car::draw(objects::car, objects::window);
-			label::draw(objects::verText, objects::window);
+
+			sf::View currentView = objects::window.getView();
+			objects::window.setView(objects::window.getDefaultView());
+
+			objects::window.setView(currentView);
 
 			break;
 		}
 		case game::Scene::MainMenu:
 		{
+			render::draw(objects::window);
+			label::draw(objects::verText, objects::window);
+			button::draw(objects::window, objects::play, objects::roboto);
+			button::draw(objects::window, objects::credits, objects::roboto);
+			button::draw(objects::window, objects::exit, objects::roboto);
 
 			break;
 		}
@@ -390,7 +432,7 @@ namespace game //definiciones
 		{
 			externs::deltaT = delta::clock.restart().asSeconds();
 
-			mth::Clamp(externs::deltaT,0.0f,0.1f);
+			mth::Clamp(externs::deltaT, 0.0f, 0.1f);
 		}
 	}
 
@@ -407,7 +449,10 @@ namespace game //definiciones
 			externs::engineSound.setLooping(true);
 			externs::engineSound.setVolume(20.0f);
 
-			externs::engineSound.play();
+			if (scenes::nextScene == Scene::Playing)
+			{
+				externs::engineSound.play();
+			}
 
 			if (!externs::backgroundMusic.openFromFile("res/sound/music.ogg"))
 			{
@@ -416,7 +461,11 @@ namespace game //definiciones
 
 			externs::backgroundMusic.setLooping(true);
 			externs::backgroundMusic.setVolume(5.0f);
-			externs::backgroundMusic.play();
+
+			if (externs::backgroundMusic.getStatus() != sf::SoundSource::Status::Playing)
+			{
+				externs::backgroundMusic.play();
+			}
 		}
 
 		static void update()
