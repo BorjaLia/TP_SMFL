@@ -133,20 +133,20 @@ namespace car
 
 		vec::Vector2 gravity = { 0.0f, globals::gravity };
 
-		rigidbody::AddForce(car.rigidBody, gravity * car.rigidBody.mass);
+		rigidbody::addForce(car.rigidBody, gravity * car.rigidBody.mass);
 
 		for (int i = 0; i < car.wheels.size(); i++)
 		{
-			rigidbody::AddForce(car.wheels[i].rigidBody, gravity * car.wheels[i].rigidBody.mass);
+			rigidbody::addForce(car.wheels[i].rigidBody, gravity * car.wheels[i].rigidBody.mass);
 		}
 
 		updateSuspension(car);
 
-		rigidbody::Update(car.rigidBody, car.transform);
+		rigidbody::update(car.rigidBody, car.transform);
 
 		for (int i = 0; i < car.wheels.size(); i++)
 		{
-			rigidbody::Update(car.wheels[i].rigidBody, car.wheels[i].transform);
+			rigidbody::update(car.wheels[i].rigidBody, car.wheels[i].transform);
 		}
 
 		updateScore(car);
@@ -346,24 +346,24 @@ namespace car
 		{
 			if (sf::Keyboard::isKeyPressed(car.brakeKey))
 			{
-				rigidbody::AddTorque(car.rigidBody, torquePower * 0.5f);
+				rigidbody::addTorque(car.rigidBody, torquePower * 0.5f);
 			}
 			if (sf::Keyboard::isKeyPressed(car.accelerateKey))
 			{
-				rigidbody::AddTorque(car.rigidBody, -torquePower * 0.5f);
+				rigidbody::addTorque(car.rigidBody, -torquePower * 0.5f);
 			}
 		}
 		else
 		{
 			if (sf::Keyboard::isKeyPressed(car.brakeKey))
 			{
-				rigidbody::AddForce(car.rigidBody, forwardDir * -drivePower * car.rigidBody.mass);
-				rigidbody::AddTorque(car.rigidBody, torquePower);
+				rigidbody::addForce(car.rigidBody, forwardDir * -drivePower * car.rigidBody.mass);
+				rigidbody::addTorque(car.rigidBody, torquePower);
 			}
 			if (sf::Keyboard::isKeyPressed(car.accelerateKey))
 			{
-				rigidbody::AddForce(car.rigidBody, forwardDir * drivePower * car.rigidBody.mass);
-				rigidbody::AddTorque(car.rigidBody, -torquePower);
+				rigidbody::addForce(car.rigidBody, forwardDir * drivePower * car.rigidBody.mass);
+				rigidbody::addTorque(car.rigidBody, -torquePower);
 			}
 		}
 	}
@@ -439,9 +439,9 @@ namespace car
 
 			w.transform.rotation += mth::DegreeToRadian((anchorVel.x > 1 ? 1.0f : -1.0f) * anchorVel.magnitude() * externs::deltaT);
 
-			vec::Vector2 forceOnWheel = rigidbody::ApplySpring(w.rigidBody, w.transform, w.suspension, anchorVel, car.transform.rotation);
+			vec::Vector2 forceOnWheel = rigidbody::applySpring(w.rigidBody, w.transform, w.suspension, anchorVel, car.transform.rotation);
 
-			rigidbody::AddForceAtPosition(car.rigidBody, forceOnWheel * -1.0f, mountPosWorld, car.transform.position);
+			rigidbody::addForceAtPosition(car.rigidBody, forceOnWheel * -1.0f, mountPosWorld, car.transform.position);
 		}
 	}
 }

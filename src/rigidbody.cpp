@@ -2,38 +2,38 @@
 
 namespace rigidbody
 {
-	void AddForce(Rigidbody& rigidbody, vec::Vector2 force)
+	void addForce(Rigidbody& rigidbody, vec::Vector2 force)
 	{
 		rigidbody.force += force;
 	}
 
-	void AddTorque(Rigidbody& rigidbody, float torque)
+	void addTorque(Rigidbody& rigidbody, float torque)
 	{
 		rigidbody.torque += torque;
 	}
 
-	void AddForceAtPosition(Rigidbody& rigidbody,vec::Vector2 worldForce, vec::Vector2 worldPoint, vec::Vector2 center)
+	void addForceAtPosition(Rigidbody& rigidbody,vec::Vector2 worldForce, vec::Vector2 worldPoint, vec::Vector2 center)
 	{
-		AddForce(rigidbody,worldForce);
+		addForce(rigidbody,worldForce);
 
 		float rx = worldPoint.x - center.x;
 		float ry = worldPoint.y - center.y;
 
 		float addedTorque = (rx * worldForce.y) - (ry * worldForce.x);
 
-		AddTorque(rigidbody,addedTorque);
+		addTorque(rigidbody,addedTorque);
 	}
 
-	void ApplyCollisionImpulse(Rigidbody& rigidbody,vec::Vector2 hitPoint, vec::Vector2 center, float stiffness)
+	void applyCollisionImpulse(Rigidbody& rigidbody,vec::Vector2 hitPoint, vec::Vector2 center, float stiffness)
 	{
 		vec::Vector2 reactionForce;
 		reactionForce.x = -rigidbody.velocity.x * stiffness * rigidbody.mass;
 		reactionForce.y = -rigidbody.velocity.y * stiffness * rigidbody.mass;
 
-		AddForceAtPosition(rigidbody,reactionForce, hitPoint, center);
+		addForceAtPosition(rigidbody,reactionForce, hitPoint, center);
 	}
 
-	vec::Vector2 ApplySpring(Rigidbody& rigidBody, trans::Transform& transform, Spring& spring, vec::Vector2 anchorVelocity, float referenceAngle)
+	vec::Vector2 applySpring(Rigidbody& rigidBody, trans::Transform& transform, Spring& spring, vec::Vector2 anchorVelocity, float referenceAngle)
 	{
 		vec::Vector2 arm = spring.localAttachment.rotated(transform.rotation);
 		vec::Vector2 attachmentWorld = transform.position + arm;
@@ -88,22 +88,22 @@ namespace rigidbody
 
 		worldForce.clamp(20000.0f);
 
-		AddForceAtPosition(rigidBody, worldForce, attachmentWorld, transform.position);
+		addForceAtPosition(rigidBody, worldForce, attachmentWorld, transform.position);
 
 		return worldForce;
 	}
 
-	void Update(Rigidbody& rigidbody, trans::Transform& transform, std::vector<Spring>& springs)
+	void update(Rigidbody& rigidbody, trans::Transform& transform, std::vector<Spring>& springs)
 	{
 		for (int i = 0; i < (int)springs.size(); i++)
 		{
-			ApplySpring(rigidbody, transform, springs[i], { 0.0f, 0.0f }, transform.rotation);
+			applySpring(rigidbody, transform, springs[i], { 0.0f, 0.0f }, transform.rotation);
 		}
 
-		Update(rigidbody, transform);
+		update(rigidbody, transform);
 	}
 
-	void Update(Rigidbody& rigidbody, trans::Transform& transform)
+	void update(Rigidbody& rigidbody, trans::Transform& transform)
 	{
 		if (rigidbody.mass == 0.0f)
 		{

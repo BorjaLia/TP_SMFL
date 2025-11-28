@@ -33,17 +33,17 @@ namespace rigidbody
 		bool useMaxDistance = true;
 	};
 
-	void AddForce(Rigidbody& rigidbody, vec::Vector2 force);
+	void addForce(Rigidbody& rigidbody, vec::Vector2 force);
 
-	void AddTorque(Rigidbody& rigidbody, float torque);
+	void addTorque(Rigidbody& rigidbody, float torque);
 
-	void AddForceAtPosition(Rigidbody& rigidbody, vec::Vector2 worldForce, vec::Vector2 worldPoint, vec::Vector2 center);
+	void addForceAtPosition(Rigidbody& rigidbody, vec::Vector2 worldForce, vec::Vector2 worldPoint, vec::Vector2 center);
 
-	void ApplyCollisionImpulse(Rigidbody& rigidbody, vec::Vector2 hitPoint, vec::Vector2 center, float stiffness);
+	void applyCollisionImpulse(Rigidbody& rigidbody, vec::Vector2 hitPoint, vec::Vector2 center, float stiffness);
 
-	vec::Vector2 ApplySpring(Rigidbody& rigidBody, trans::Transform& transform, Spring& spring, vec::Vector2 anchorVelocity, float referenceAngle);
+	vec::Vector2 applySpring(Rigidbody& rigidBody, trans::Transform& transform, Spring& spring, vec::Vector2 anchorVelocity, float referenceAngle);
 
-	void Update(Rigidbody& rigidbody, trans::Transform& transform, std::vector<Spring>& springs);
+	void update(Rigidbody& rigidbody, trans::Transform& transform, std::vector<Spring>& springs);
 	
-	void Update(Rigidbody& rigidbody, trans::Transform& transform);
+	void update(Rigidbody& rigidbody, trans::Transform& transform);
 }
