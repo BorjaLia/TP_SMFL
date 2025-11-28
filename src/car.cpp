@@ -289,7 +289,12 @@ namespace car
 		car.rigidBody.angularVelocity = 0.0f;
 		car.rigidBody.force = { 0.0f, 0.0f };
 		car.rigidBody.torque = 0.0f;
+	
 		car.score = 0.0f;
+		car.distanceScore = 0.0f;
+		car.airScore = 0.0f;
+		car.airTricks = 0;
+		car.airTime = 0.0f;
 
 		for (int i = 0; i < car.wheels.size(); i++)
 		{
