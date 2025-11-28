@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "color.h"
+
 namespace render
 {
 	static parallax::Background clouds;
@@ -58,5 +60,24 @@ namespace render
 		parallax::draw(window, hills);
 
 		window.setView(gameView);
+	}
+
+	void drawThickLine(vec::Vector2 point1, vec::Vector2 point2, float outlineDrawWidth, sf::RenderWindow& window, color::ColorsName color)
+	{
+		vec::Vector2 startPoint = point1;
+		vec::Vector2 endPoint = point2;
+		vec::Vector2 line = endPoint - startPoint;
+
+		sf::RectangleShape lineTemp = sf::RectangleShape({ line.magnitude(),outlineDrawWidth});
+
+		sf::Vector2f tempVec = sf::Vector2f(point1.x, point1.y);
+
+		lineTemp.setPosition(tempVec);
+		lineTemp.setRotation(sf::radians(line.angle()));
+
+		sf::Color drawColor = sf::Color({static_cast<uint8_t>(color::colors[static_cast<int>(color)].r),static_cast<uint8_t>(color::colors[static_cast<int>(color)].g),static_cast<uint8_t>(color::colors[static_cast<int>(color)].b),static_cast<uint8_t>(color::colors[static_cast<int>(color)].a) });
+		lineTemp.setFillColor(drawColor);
+
+		window.draw(lineTemp);
 	}
 }
