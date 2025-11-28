@@ -2,6 +2,62 @@
 
 namespace coll
 {
+	RectCorners GetWorldCorners(const shape::Rectangle& rect, trans::Transform& t)
+	{
+		RectCorners c;
+		float halfW = rect.size.x / 2.0f;
+		float halfH = rect.size.y / 2.0f;
+
+		vec::Vector2 p_tl = { -halfW + rect.pos.x, -halfH + rect.pos.y };
+		vec::Vector2 p_tr = { halfW + rect.pos.x, -halfH + rect.pos.y };
+		vec::Vector2 p_br = { halfW + rect.pos.x, halfH + rect.pos.y };
+		vec::Vector2 p_bl = { -halfW + rect.pos.x, halfH + rect.pos.y };
+
+		c.tl = t.position + p_tl.rotated(t.rotation);
+		c.tr = t.position + p_tr.rotated(t.rotation);
+		c.br = t.position + p_br.rotated(t.rotation);
+		c.bl = t.position + p_bl.rotated(t.rotation);
+
+		return c;
+	}
+
+	CollisionResult PointVsLineSegment(vec::Vector2 point, vec::Vector2 lineStart, vec::Vector2 lineEnd)
+	{
+		CollisionResult result;
+
+		vec::Vector2 lineVec = lineEnd - lineStart;
+		vec::Vector2 lineDir = lineVec.normalized();
+		float segmentLen = lineVec.magnitude();
+
+		vec::Vector2 normal = { lineDir.y, -lineDir.x };
+
+		vec::Vector2 toPoint = point - lineStart;
+
+		float t = toPoint * lineDir;
+
+		float buffer = 20.0f;
+
+		if (t >= -buffer && t <= segmentLen + buffer)
+		{
+			float tClamped = std::max(0.0f, std::min(segmentLen, t));
+			vec::Vector2 closestOnLine = lineStart + (lineDir * tClamped);
+
+			vec::Vector2 diff = point - closestOnLine;
+
+			float distSigned = diff * normal;
+
+			if (distSigned < 0.0f)
+			{
+				result.isColliding = true;
+				result.penetration = -distSigned;
+				result.normal = normal;
+				result.surfacePoint = closestOnLine;
+			}
+		}
+
+		return result;
+	}
+
 	bool LineOnLine(vec::Vector2 line1Point1, vec::Vector2 line1Point2, vec::Vector2 line2Point1, vec::Vector2 line2Point2)
 	{
 		vec::Vector2 a = line1Point1;

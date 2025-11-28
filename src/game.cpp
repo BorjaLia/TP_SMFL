@@ -24,6 +24,7 @@ namespace game
 	namespace objects
 	{
 		sf::View camera;
+		static float cameraOffset = (0.25f * externs::screenWidth);
 		sf::RenderWindow window;
 
 		ground::Ground ground;
@@ -44,6 +45,7 @@ namespace game
 	static void update();
 	static void draw();
 
+	static bool ResolveRectVsGround(car::Car& car, shape::Rectangle& rect, bool isDeathBox);
 	static void carCollision();
 	static void wheelCollision();
 	static void updateCamera();
@@ -195,19 +197,78 @@ namespace game //definiciones
 		objects::window.display();
 	}
 
+	static bool ResolveRectVsGround(car::Car& car, shape::Rectangle& rect, bool isDeathBox)
+	{
+		coll::RectCorners corners = coll::GetWorldCorners(rect, car.transform);
+		vec::Vector2 points[4] = { corners.tl, corners.tr, corners.br, corners.bl };
+
+		bool hitDetected = false;
+
+		for (int i = 0; i < objects::ground.parts[0].shape.pointAmount - 1; i++)
+		{
+			vec::Vector2 p1 = objects::ground.parts[0].shape.points[i];
+			vec::Vector2 p2 = objects::ground.parts[0].shape.points[i + 1];
+
+			for (int k = 0; k < 4; k++)
+			{
+				coll::CollisionResult result = coll::PointVsLineSegment(points[k], p1, p2);
+
+				if (result.isColliding)
+				{
+					if (isDeathBox)
+					{
+						return true;
+					}
+
+					hitDetected = true;
+
+					vec::Vector2 pushOut = result.normal * result.penetration;
+					car.transform.position += pushOut;
+
+					points[k] += pushOut;
+
+					vec::Vector2 r = points[k] - car.transform.position;
+
+					vec::Vector2 pointVel = car.rigidBody.velocity;
+					pointVel.x += -car.rigidBody.angularVelocity * r.y;
+					pointVel.y += car.rigidBody.angularVelocity * r.x;
+
+					float relVel = pointVel * result.normal;
+
+					if (relVel < 0.0f)
+					{
+						float e = 0.2f;
+						float j = -(1.0f + e) * relVel;
+
+						vec::Vector2 impulse = result.normal * j;
+
+						car.rigidBody.velocity += impulse * 0.5f;
+
+						vec::Vector2 tangent = { -result.normal.y, result.normal.x };
+						float friction = 0.5f;
+						float velTangent = pointVel * tangent;
+
+						car.rigidBody.velocity += tangent * (-velTangent * friction);
+
+						float torqueImpulse = (r.x * impulse.y - r.y * impulse.x);
+
+						car.rigidBody.angularVelocity += torqueImpulse * 0.001f;
+					}
+				}
+			}
+		}
+		return hitDetected;
+	}
+
 	static void carCollision()
 	{
-		if (objects::car.transform.position.y > 500 - objects::car.collision.size.y)
+		if (ResolveRectVsGround(objects::car, objects::car.deathCollision, true))
 		{
-			//objects::car.rigidBody.velocity.rotateDegree(180);
-			//objects::car.rigidBody.velocity = 0.25f;
-			//std::cout << "out!\n";
+			objects::car.isAlive = false;
 		}
-		if (objects::car.transform.position.y > 500 - (objects::car.collision.size.y * 2))
-		{
-			//std::cout << "force!\n";
-			//rigidbody::AddForce(objects::car.rigidBody, { 0.0f,-globals::gravity * objects::car.rigidBody.mass * 5.0f });
-		}
+
+		ResolveRectVsGround(objects::car, objects::car.collision, false);
+		
 		wheelCollision();
 	}
 
@@ -230,6 +291,7 @@ namespace game //definiciones
 			for (int j = 0; j < objects::car.wheels.size(); j++)
 			{
 				vec::Vector2 wheelPos = objects::car.wheels[j].transform.position + objects::car.wheels[j].offset;
+				float radius = objects::car.wheels[j].collision.radius;
 
 				vec::Vector2 lineDir = p2 - p1;
 				float lineLen = lineDir.magnitude();
@@ -237,31 +299,48 @@ namespace game //definiciones
 
 				vec::Vector2 toWheel = wheelPos - p1;
 				float t = toWheel * lineDir;
-				t = std::max(0.0f, std::min(lineLen, t));
 
-				vec::Vector2 closestPoint = p1 + (lineDir * t);
-
-				vec::Vector2 distVec = wheelPos - closestPoint;
-				float dist = distVec.magnitude();
-
-				if (dist < objects::car.wheels[j].collision.radius)
+				if (t >= -radius && t <= lineLen + radius)
 				{
-					objects::car.wheels[j].isGroundedTimer = objects::car.wheels[j].isGroundedTimerLimit;
-					objects::car.wheels[j].isGrounded = true;
+					float tClamped = std::max(0.0f, std::min(lineLen, t));
+					vec::Vector2 closestPoint = p1 + (lineDir * tClamped);
 
-					float penetration = objects::car.wheels[j].collision.radius - dist;
-					vec::Vector2 normal = distVec;
-					normal.normalize();
-
-					objects::car.wheels[j].transform.position = objects::car.wheels[j].transform.position + (normal * penetration);
-
-					float velAlongNormal = objects::car.wheels[j].rigidBody.velocity * normal;
-					if (velAlongNormal < 0)
+					if (wheelPos.y > closestPoint.y + radius)
 					{
-						vec::Vector2 remove = normal * velAlongNormal;
-						objects::car.wheels[j].rigidBody.velocity = objects::car.wheels[j].rigidBody.velocity - remove;
+						float diff = closestPoint.y - (wheelPos.y - radius);
+						objects::car.transform.position.y += diff;
 
-						//objects::car.wheels[j].rigidBody.velocity.x *= 0.9f;
+						if (objects::car.rigidBody.velocity.y > 0)
+						{
+							objects::car.rigidBody.velocity.y = 0.0f;
+						}
+
+						continue;
+					}
+
+					vec::Vector2 distVec = wheelPos - closestPoint;
+					float dist = distVec.magnitude();
+
+					if (dist < radius)
+					{
+						objects::car.wheels[j].isGroundedTimer = objects::car.wheels[j].isGroundedTimerLimit;
+						objects::car.wheels[j].isGrounded = true;
+
+						float penetration = radius - dist;
+						vec::Vector2 normal = distVec;
+						normal.normalize();
+
+						objects::car.wheels[j].transform.position = objects::car.wheels[j].transform.position + (normal * penetration);
+
+						float velAlongNormal = objects::car.wheels[j].rigidBody.velocity * normal;
+						if (velAlongNormal < 0)
+						{
+							vec::Vector2 remove = normal * velAlongNormal;
+							objects::car.wheels[j].rigidBody.velocity = objects::car.wheels[j].rigidBody.velocity - remove;
+
+							// Friction
+							//objects::car.wheels[j].rigidBody.velocity.x *= 0.99f;
+						}
 					}
 				}
 			}
@@ -270,21 +349,22 @@ namespace game //definiciones
 
 	static void updateCamera()
 	{
-		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W))
-		//{
-		//	objects::camera.move({ 0.0f,-100.0f * externs::deltaT });
-		//}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A))
 		{
 			objects::camera.move({ -100.0f * externs::deltaT ,0.0f });
 		}
-		//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S))
-		//{
-		//	objects::camera.move({ 0.0f,100.0f * externs::deltaT });
-		//}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D))
 		{
 			objects::camera.move({ 100.0f * externs::deltaT ,0.0f });
+		}
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+		{
+			objects::cameraOffset -= externs::deltaT * 500.0f;
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+		{
+			objects::cameraOffset += externs::deltaT * 500.0f;
 		}
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
@@ -296,7 +376,7 @@ namespace game //definiciones
 			objects::camera.zoom(1.0f - (externs::deltaT * 0.5f));
 		}
 
-		objects::camera.move({ (((0.25f * externs::screenWidth) + objects::car.transform.position.x) - objects::camera.getCenter().x) * 5.0f * externs::deltaT ,(objects::car.transform.position.y - objects::camera.getCenter().y) * 5.0f * externs::deltaT });
+		objects::camera.move({ ((objects::cameraOffset + objects::car.transform.position.x) - objects::camera.getCenter().x) * 5.0f * externs::deltaT ,(objects::car.transform.position.y - objects::camera.getCenter().y) * 5.0f * externs::deltaT });
 
 		objects::window.setView(objects::camera);
 	}
