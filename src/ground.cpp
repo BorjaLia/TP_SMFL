@@ -71,7 +71,6 @@ namespace ground
 	{
 		drawPart(ground.parts[static_cast<int>(PartName::Left)], window);
 		drawPart(ground.parts[static_cast<int>(PartName::Right)], window);
-		std::cout << distanceBetweenParts;
 	}
 
 	static void drawPart(Part part, sf::RenderWindow& window)
