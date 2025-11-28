@@ -557,12 +557,26 @@ namespace game //definiciones
 
 	static void carCollision()
 	{
+		if (!objects::car.isAlive)
+		{
+			objects::car.timeSinceDeath += externs::deltaT;
+			if (objects::car.timeSinceDeath >= objects::car.timeSinceDeathLimit)
+			{
+				scenes::nextScene = Scene::Death;
+				objects::car.timeSinceDeath = 0.0f;
+			}
+		}
+		else
+		{
+			objects::car.timeSinceDeath = 0.0f;
+		}
+
+
 		if (ResolveRectVsGround(objects::car, objects::car.deathCollision, true))
 		{
 			if (externs::deathSound.getStatus() != sf::SoundSource::Status::Playing)
 			{
 				externs::deathSound.play();
-				scenes::nextScene = Scene::Death;
 			}
 
 			objects::car.isAlive = false;

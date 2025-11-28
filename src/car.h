@@ -52,6 +52,9 @@ namespace car
 
 		bool isAlive = false;
 
+		float timeSinceDeathLimit = 3.0f;
+		float timeSinceDeath = 0.0f;
+
 		sf::Keyboard::Key accelerateKey;
 		sf::Keyboard::Key brakeKey;
 
