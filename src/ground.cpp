@@ -1,6 +1,8 @@
 #include "ground.h"
 
 #include "LLM_math.h"
+#include "color.h"
+#include "render.h"
 
 namespace ground
 {
@@ -31,7 +33,13 @@ namespace ground
 	static const float factorTotal = -0.7f;
 	static const int iter = 245;
 
+	static const float outlineDrawWidth = 5.f;
 	static const float limitLineHeight = 10000.f;
+	static const float distanceBetweenOutline = outlineDrawWidth + 1.f;
+	static const float secondLineDrawWidth = 15.f;
+
+	static const color::ColorsName outLineColor = color::ColorsName::DarkGreen;
+	static const color::ColorsName secondLineColor = color::ColorsName::LightGreen;
 
 	Ground init()
 	{
@@ -71,22 +79,25 @@ namespace ground
 	{
 		drawPart(ground.parts[static_cast<int>(PartName::Left)], window);
 		drawPart(ground.parts[static_cast<int>(PartName::Right)], window);
-		std::cout << distanceBetweenParts;
 	}
 
 	static void drawPart(Part part, sf::RenderWindow& window)
 	{
 		for (int i = 0; i < part.shape.pointAmount - 1; i++)
 		{
-			sf::VertexArray linesTemp = sf::VertexArray(sf::PrimitiveType::Lines, 2);
+			vec::Vector2 outLineStart = part.shape.points[i];
+			vec::Vector2 outLineEnd = part.shape.points[i + 1];
+			render::drawThickLine(outLineStart, outLineEnd, outlineDrawWidth,window,outLineColor );
 
-			linesTemp[0].position.x = part.shape.points[i].x;
-			linesTemp[0].position.y = part.shape.points[i].y;
+			vec::Vector2 line = { part.shape.points[i + 1] - part.shape.points[i] };
+			line.normalize();
 
-			linesTemp[1].position.x = part.shape.points[i + 1].x;
-			linesTemp[1].position.y = part.shape.points[i + 1].y;
+			vec::Vector2 normal = {-line.y, line.x};
 
-			window.draw(linesTemp);
+			vec::Vector2 secondLineStart = outLineStart + normal * distanceBetweenOutline;
+			vec::Vector2 secondLineEnd = outLineEnd + normal * distanceBetweenOutline;
+
+			render::drawThickLine(secondLineStart, secondLineEnd, secondLineDrawWidth,window, secondLineColor);
 		}
 
 		sf::VertexArray linesTempo = sf::VertexArray(sf::PrimitiveType::Lines, 2);
