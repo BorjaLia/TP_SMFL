@@ -117,6 +117,12 @@
     <ClCompile Include="src\render.cpp">
       <Filter>src\Render</Filter>
     </ClCompile>
+    <ClCompile Include="src\button.cpp">
+      <Filter>src\UI\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="src\color.cpp">
+      <Filter>src\Render\Color</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\LLM_math.h">
@@ -166,6 +172,9 @@
     </ClInclude>
     <ClInclude Include="src\color.h">
       <Filter>src\Render\Color</Filter>
+    </ClInclude>
+    <ClInclude Include="src\button.h">
+      <Filter>src\UI\Button</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

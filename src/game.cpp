@@ -1,11 +1,8 @@
 #include "game.h"
 
-#include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include <string>
 
 #include "collision.h"
-#include "globals.h"
 #include "ground.h"
 #include "car.h"
 #include "label.h"
@@ -96,7 +93,7 @@ namespace game
 	static void update();
 	static void draw();
 
-	static bool ResolveRectVsGround(car::Car& car, shape::Rectangle& rect, bool isDeathBox);
+	static bool resolveRectVsGround(car::Car& car, shape::Rectangle& rect, bool isDeathBox);
 	static void carCollision();
 	static void wheelCollision();
 	static void updateCamera();
@@ -271,14 +268,13 @@ namespace game //definiciones
 
 				objects::window.setView(currentView);
 
-
-
 				return;
 			}
 
 			if (retry)
 			{
 				car::reset(objects::car, { externs::screenWidth,externs::screenHeight / 3.0f });
+				ground::init(objects::ground);
 				retry = false;
 			}
 
@@ -358,6 +354,7 @@ namespace game //definiciones
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
 			{
 				car::reset(objects::car, { externs::screenWidth, externs::screenHeight / 3.0f });
+				ground::init(objects::ground);
 				scenes::nextScene = Scene::Playing;
 				sound::init();
 			}
@@ -365,6 +362,7 @@ namespace game //definiciones
 			if (objects::deathMenu.clicked)
 			{
 				car::reset(objects::car, { externs::screenWidth, externs::screenHeight / 3.0f });
+				ground::init(objects::ground);
 				scenes::nextScene = Scene::MainMenu;
 			}
 
@@ -483,7 +481,7 @@ namespace game //definiciones
 	}
 
 
-	static bool ResolveRectVsGround(car::Car& car, shape::Rectangle& rect, bool isDeathBox)
+	static bool resolveRectVsGround(car::Car& car, shape::Rectangle& rect, bool isDeathBox)
 	{
 		coll::RectCorners corners = coll::GetWorldCorners(rect, car.transform);
 		vec::Vector2 points[4] = { corners.tl, corners.tr, corners.br, corners.bl };
@@ -582,7 +580,7 @@ namespace game //definiciones
 			objects::car.isAlive = false;
 		}
 
-		ResolveRectVsGround(objects::car, objects::car.collision, false);
+		resolveRectVsGround(objects::car, objects::car.collision, false);
 
 		wheelCollision();
 	}
@@ -698,8 +696,8 @@ namespace game //definiciones
 
 		objects::window.setView(objects::camera);
 
-		objects::camera.setSize({ mth::Min(objects::camera.getSize().x,1900.0f),mth::Min(objects::camera.getSize().y,1069.0f) });
-		objects::camera.setSize({ mth::Max(objects::camera.getSize().x,300.0f),mth::Max(objects::camera.getSize().y,169.0f) });
+		objects::camera.setSize({ mth::Min(objects::camera.getSize().x,1800.0f),mth::Min(objects::camera.getSize().y,(1800.0f * (9.0f/16.0f))) });
+		objects::camera.setSize({ mth::Max(objects::camera.getSize().x,300.0f),mth::Max(objects::camera.getSize().y,(300.0f * (9.0f / 16.0f))) });
 
 		mth::Clamp(objects::cameraOffset, -269.0f, 425.0f);
 	}
