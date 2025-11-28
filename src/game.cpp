@@ -306,6 +306,8 @@ namespace game //definiciones
 	{
 		if (ResolveRectVsGround(objects::car, objects::car.deathCollision, true))
 		{
+			externs::deathSound.play();
+
 			objects::car.isAlive = false;
 		}
 
@@ -448,6 +450,29 @@ namespace game //definiciones
 
 			externs::engineSound.setLooping(true);
 			externs::engineSound.setVolume(20.0f);
+
+			if (!externs::trickBuffer.loadFromFile("res/sound/trick.wav"))
+			{
+				std::cout << "Error: trick sound not found";
+			}
+
+			externs::trickSound.setVolume(10.0f);
+
+			if (!externs::deathBuffer.loadFromFile("res/sound/death.wav"))
+			{
+				std::cout << "Error: death sound not found";
+			}
+			externs::deathSound.setBuffer(externs::deathBuffer);
+
+			externs::deathSound.setVolume(10.0f);
+
+			if (!externs::deathBuffer.loadFromFile("res/sound/clap.wav"))
+			{
+				std::cout << "Error: clap sound not found";
+			}
+			externs::deathSound.setBuffer(externs::clapBuffer);
+
+			externs::clapSound.setVolume(10.0f);
 
 			if (scenes::nextScene == Scene::Playing)
 			{

@@ -5,6 +5,8 @@
 
 namespace car
 {
+	static float basePitch = 1.0f;
+
 	static void manageInput(Car& car);
 	static void updateScore(Car& car);
 	static void updateSuspension(Car& car);
@@ -368,6 +370,11 @@ namespace car
 			if (currentTricks > car.airTricks)
 			{
 				std::cout << "Flip! " << currentTricks << "\n";
+				externs::trickSound.play();
+
+				static float pitch = 1.0f - ((currentTricks - 1) * 0.25f);
+
+				externs::engineSound.setPitch(pitch);
 			}
 
 			car.airTricks = currentTricks;
@@ -377,7 +384,9 @@ namespace car
 			if (car.airTime > 1.0f)
 			{
 				car.airScore += car.airTime * (1 + car.airTricks);
+				externs::clapSound.play();
 				std::cout << "nice trick! +" << car.airTime * (1 + car.airTricks) << "\n";
+				externs::engineSound.setPitch(basePitch);
 			}
 			car.airTime = 0.0f;
 			car.airTricks = 0;

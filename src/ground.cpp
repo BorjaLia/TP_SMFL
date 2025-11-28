@@ -104,16 +104,6 @@ namespace ground
 
 			render::drawThickLine(secondLineStart, secondLineEnd, secondLineDrawWidth, window, secondLineColor);
 		}
-
-		sf::VertexArray linesTempo = sf::VertexArray(sf::PrimitiveType::Lines, 2);
-
-		linesTempo[0].position.x = part.limitLine[0].x;
-		linesTempo[0].position.y = part.limitLine[0].y;
-
-		linesTempo[1].position.x = part.limitLine[1].x;
-		linesTempo[1].position.y = part.limitLine[1].y;
-
-		window.draw(linesTempo);
 	}
 
 	static void drawGround(Ground ground, sf::RenderWindow& window)
