@@ -61,6 +61,15 @@
     <Filter Include="src\UI\Label">
       <UniqueIdentifier>{43731653-c594-40cb-8934-b1e57a32e163}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Render">
+      <UniqueIdentifier>{db201d4c-d93d-48f8-8431-eb9eac8b6e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render\Parallax">
+      <UniqueIdentifier>{d4566a76-8837-4ada-887c-c31f553ccd9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Render\Color">
+      <UniqueIdentifier>{77de8648-3f44-46c3-9d07-a8588af191f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -90,9 +99,6 @@
     <ClCompile Include="src\irregular.cpp">
       <Filter>src\Math\Shape</Filter>
     </ClCompile>
-    <ClCompile Include="src\wheel.cpp">
-      <Filter>src\Game\Objects\Car\Wheel</Filter>
-    </ClCompile>
     <ClCompile Include="src\car.cpp">
       <Filter>src\Game\Objects\Car</Filter>
     </ClCompile>
@@ -101,6 +107,15 @@
     </ClCompile>
     <ClCompile Include="src\main_menu.cpp">
       <Filter>src\Game\Menus\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="src\label.cpp">
+      <Filter>src\UI\Label</Filter>
+    </ClCompile>
+    <ClCompile Include="src\background.cpp">
+      <Filter>src\Render\Parallax</Filter>
+    </ClCompile>
+    <ClCompile Include="src\render.cpp">
+      <Filter>src\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -134,14 +149,23 @@
     <ClInclude Include="src\regular.h">
       <Filter>src\Math\Shape</Filter>
     </ClInclude>
-    <ClInclude Include="src\wheel.h">
-      <Filter>src\Game\Objects\Car\Wheel</Filter>
-    </ClInclude>
     <ClInclude Include="src\car.h">
       <Filter>src\Game\Objects\Car</Filter>
     </ClInclude>
     <ClInclude Include="src\main_menu.h">
       <Filter>src\Game\Menus\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="src\label.h">
+      <Filter>src\UI\Label</Filter>
+    </ClInclude>
+    <ClInclude Include="src\background.h">
+      <Filter>src\Render\Parallax</Filter>
+    </ClInclude>
+    <ClInclude Include="src\render.h">
+      <Filter>src\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\color.h">
+      <Filter>src\Render\Color</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

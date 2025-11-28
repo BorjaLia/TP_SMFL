@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\background.cpp" />
     <ClCompile Include="src\car.cpp" />
     <ClCompile Include="src\collision.cpp" />
     <ClCompile Include="src\file_manager.cpp" />
@@ -30,12 +31,15 @@
     <ClCompile Include="src\LLM_math.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\main_menu.cpp" />
+    <ClCompile Include="src\render.cpp" />
     <ClCompile Include="src\rigidbody.cpp" />
     <ClCompile Include="src\transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\background.h" />
     <ClInclude Include="src\car.h" />
     <ClInclude Include="src\collision.h" />
+    <ClInclude Include="src\color.h" />
     <ClInclude Include="src\file_manager.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\globals.h" />
@@ -45,6 +49,7 @@
     <ClInclude Include="src\LLM_math.h" />
     <ClInclude Include="src\main_menu.h" />
     <ClInclude Include="src\regular.h" />
+    <ClInclude Include="src\render.h" />
     <ClInclude Include="src\rigidbody.h" />
     <ClInclude Include="src\transform.h" />
   </ItemGroup>
@@ -148,7 +153,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)src;$(SolutionDir)lib\SFML-3.0.2\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-audio.lib;sfml-network.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-audio-d.lib;sfml-network-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>"$(ProjectDir)scripts\config.bat" "$(ProjectDir)" "$(Outdir)"</Command>
