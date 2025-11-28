@@ -6,6 +6,7 @@
 namespace car
 {
 	static void manageInput(Car& car);
+	static void updateScore(Car& car);
 	static void updateSuspension(Car& car);
 
 	Car init()
@@ -142,6 +143,8 @@ namespace car
 		{
 			rigidbody::Update(car.wheels[i].rigidBody, car.wheels[i].transform);
 		}
+
+		updateScore(car);
 	}
 
 	void draw(Car& car, sf::RenderWindow& window)
@@ -336,6 +339,52 @@ namespace car
 				rigidbody::AddTorque(car.rigidBody, -torquePower);
 			}
 		}
+	}
+
+	static void updateScore(Car& car)
+	{
+		if (!car.isAlive)
+		{
+			return;
+		}
+
+		if (car.transform.position.x /500.0f > car.distanceScore)
+		{
+			car.distanceScore = car.transform.position.x / 500.0f;
+		}
+
+		if (!car.wheels[0].isGrounded && !car.wheels[1].isGrounded)
+		{
+			car.airTime += externs::deltaT;
+
+			float rotationDelta = car.transform.rotation - car.liftAngle;
+
+			float absRotation = mth::Abs(rotationDelta);
+
+			float rotationUnit = PI * 2.0f;
+
+			int currentTricks = static_cast<int>(absRotation / rotationUnit);
+
+			if (currentTricks > car.airTricks)
+			{
+				std::cout << "Flip! " << currentTricks << "\n";
+			}
+
+			car.airTricks = currentTricks;
+		}
+		else if (car.wheels[0].isGrounded || car.wheels[1].isGrounded)
+		{
+			if (car.airTime > 1.0f)
+			{
+				car.airScore += car.airTime * (1 + car.airTricks);
+				std::cout << "nice trick! +" << car.airTime * (1 + car.airTricks) << "\n";
+			}
+			car.airTime = 0.0f;
+			car.airTricks = 0;
+
+			car.liftAngle = car.transform.rotation;
+		}
+		car.score = car.distanceScore + car.airScore;
 	}
 
 	static void updateSuspension(Car& car)

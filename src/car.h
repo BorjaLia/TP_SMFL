@@ -41,7 +41,14 @@ namespace car
 
 		std::vector<wheel::Wheel> wheels;
 
-		int score = 0;
+		float score = 0.0f;
+
+		float distanceScore = 0.0f;
+		float airScore = 0.0f;
+		float airTime = 0.0f;
+
+		int airTricks = 0;
+		float liftAngle = 0;
 
 		bool isAlive = false;
 

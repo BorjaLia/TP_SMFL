@@ -33,4 +33,6 @@ namespace externs
 	extern sf::Sound engineSound;
 
 	extern sf::Music backgroundMusic;
+
+	extern sf::Font font;
 }

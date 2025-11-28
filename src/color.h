@@ -10,14 +10,17 @@ namespace color
 		int a = 0;
 	};
 
-	static const int maxColors = 5;
+	static const int maxColors = 6;
 	enum class ColorsName
 	{
 		DarkGreen,
 		LightGreen,
 		DarkGray,
 		RedNapthol,
-		Brown,
+
+		SlightDarkWhite,
+		MediumWhite,
+		DarkWhite,
 	};
 
 	const RGBColor colors[maxColors] =
@@ -26,7 +29,10 @@ namespace color
 		{144,238,144,255},
 		{58,102,58,255},
 		{200,20,43,255},
-		{128,90,64,255}
+
+		{183,185,183,255},
+		{170,172,171,255},
+		{121,124,122,255},
 	};
 }
 
