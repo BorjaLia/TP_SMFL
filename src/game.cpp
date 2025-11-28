@@ -569,8 +569,7 @@ namespace game //definiciones
 			objects::car.timeSinceDeath = 0.0f;
 		}
 
-
-		if (ResolveRectVsGround(objects::car, objects::car.deathCollision, true))
+		if (resolveRectVsGround(objects::car, objects::car.deathCollision, true))
 		{
 			if (externs::deathSound.getStatus() != sf::SoundSource::Status::Playing)
 			{
