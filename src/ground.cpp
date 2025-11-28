@@ -7,6 +7,7 @@
 namespace ground
 {
 	static void drawPart(Part part, sf::RenderWindow& window);
+	static void drawGround(Ground ground, sf::RenderWindow& window);
 	static void movePart(Part& part);
 	static void initParts(Ground& ground);
 	static void setLimitLine(Part& part);
@@ -16,7 +17,7 @@ namespace ground
 namespace ground
 {
 	static const float distBetweenPoints = 15.f;
-	static const int maxPoints = 300;
+	static const int maxPoints = 30;
 	static const float commonHeight = 500;
 
 	static const float distanceBetweenParts = distBetweenPoints * (maxPoints - 1) * 12.5f;
@@ -38,8 +39,13 @@ namespace ground
 	static const float distanceBetweenOutline = outlineDrawWidth + 1.f;
 	static const float secondLineDrawWidth = 15.f;
 
+	static const float groundTiles = 8.f;
+	static const float groundTilesHeight = 120.f;
+
 	static const color::ColorsName outLineColor = color::ColorsName::DarkGreen;
 	static const color::ColorsName secondLineColor = color::ColorsName::LightGreen;
+	static const color::ColorsName groundColor = color::ColorsName::Brown;
+
 
 	Ground init()
 	{
@@ -77,6 +83,7 @@ namespace ground
 
 	void draw(Ground& ground, sf::RenderWindow& window)
 	{
+		drawGround(ground, window);
 		drawPart(ground.parts[static_cast<int>(PartName::Left)], window);
 		drawPart(ground.parts[static_cast<int>(PartName::Right)], window);
 	}
@@ -87,17 +94,17 @@ namespace ground
 		{
 			vec::Vector2 outLineStart = part.shape.points[i];
 			vec::Vector2 outLineEnd = part.shape.points[i + 1];
-			render::drawThickLine(outLineStart, outLineEnd, outlineDrawWidth,window,outLineColor );
+			render::drawThickLine(outLineStart, outLineEnd, outlineDrawWidth, window, outLineColor);
 
 			vec::Vector2 line = { part.shape.points[i + 1] - part.shape.points[i] };
 			line.normalize();
 
-			vec::Vector2 normal = {-line.y, line.x};
+			vec::Vector2 normal = { -line.y, line.x };
 
 			vec::Vector2 secondLineStart = outLineStart + normal * distanceBetweenOutline;
 			vec::Vector2 secondLineEnd = outLineEnd + normal * distanceBetweenOutline;
 
-			render::drawThickLine(secondLineStart, secondLineEnd, secondLineDrawWidth,window, secondLineColor);
+			render::drawThickLine(secondLineStart, secondLineEnd, secondLineDrawWidth, window, secondLineColor);
 		}
 
 		sf::VertexArray linesTempo = sf::VertexArray(sf::PrimitiveType::Lines, 2);
@@ -111,23 +118,82 @@ namespace ground
 		window.draw(linesTempo);
 	}
 
+	static void drawGround(Ground ground, sf::RenderWindow& window)
+	{
+		for (int i = 0; i < totalParts; i++)
+		{
+			for (int j = 0; j < ground.parts[i].shape.pointAmount - 1; j++)
+			{
+				sf::ConvexShape currGround;
+
+				currGround.setPointCount(3);
+
+				float leftPointX = ground.parts[i].shape.points[j].x;
+				float leftPointY = ground.parts[i].shape.points[j].y;
+
+				float rightPointX = ground.parts[i].shape.points[j + 1].x;
+				float rightPointY = ground.parts[i].shape.points[j + 1].y;
+
+				currGround.setPoint(0, { leftPointX , leftPointY });
+				currGround.setPoint(1, { rightPointX ,rightPointY });
+
+				vec::Vector2 lowest;
+
+				if (leftPointY < rightPointY)
+				{
+					lowest = { leftPointX ,leftPointY };
+				}
+				else if (rightPointY <= leftPointY)
+				{
+					lowest = { rightPointX ,rightPointY };
+				}
+
+				float thirdPointX = lowest.x;
+				float thirdPointY = fmaxf(leftPointY, rightPointY);
+
+				currGround.setPoint(2, { thirdPointX,thirdPointY });
+
+				sf::Texture* texture = &externs::groundTexture;
+				currGround.setTexture(texture);
+
+				window.draw(currGround);
+
+				for (int k = 0; k < groundTiles; k++)
+				{
+					sf::ConvexShape currTileSheet;
+
+					currTileSheet.setPointCount(4);
+
+					currTileSheet.setPoint(0, { leftPointX,thirdPointY + groundTilesHeight * k });
+					currTileSheet.setPoint(1, { rightPointX, thirdPointY + groundTilesHeight * k });
+					currTileSheet.setPoint(2, { rightPointX, groundTilesHeight + thirdPointY + groundTilesHeight * k });
+					currTileSheet.setPoint(3, { leftPointX, groundTilesHeight + thirdPointY + groundTilesHeight * k });
+
+					currTileSheet.setTexture(texture);
+
+					window.draw(currTileSheet);
+				}
+			}
+		}
+	}
+
 	static void movePart(Part& part)
 	{
 		for (int i = 0; i < part.shape.pointAmount; i++)
 		{
 			part.shape.points[i].x += distanceBetweenParts * 2;
 
-			if ((i > maxPoints-1 - partConnectionDotMargin && i < maxPoints-1) || (i > 0 && i <= partConnectionDotMargin-1))
+			if ((i > maxPoints - 1 - partConnectionDotMargin && i < maxPoints - 1) || (i > 0 && i <= partConnectionDotMargin - 1))
 			{
 				part.shape.points[i].y = randomizedY(part.shape.points[i], 2);
 			}
-			else if (i == maxPoints-1 || i == 0)
+			else if (i == maxPoints - 1 || i == 0)
 			{
 				part.shape.points[i].y = commonHeight;
 			}
 			else
 			{
-				part.shape.points[i].y = randomizedY(part.shape.points[i],1);
+				part.shape.points[i].y = randomizedY(part.shape.points[i], 1);
 			}
 		}
 
@@ -150,9 +216,9 @@ namespace ground
 					pointsAux[j].x += i * distanceBetweenParts;
 				}
 
-				if ((j > maxPoints - 1 - partConnectionDotMargin && j < maxPoints-1) || (j > 0 && j <= partConnectionDotMargin - 1 && i != 0))
+				if ((j > maxPoints - 1 - partConnectionDotMargin && j < maxPoints - 1) || (j > 0 && j <= partConnectionDotMargin - 1 && i != 0))
 				{
-					pointsAux[j].y = randomizedY(pointsAux[j],2);
+					pointsAux[j].y = randomizedY(pointsAux[j], 2);
 				}
 				else if (j == maxPoints - 1 || j == 0)
 				{
@@ -160,10 +226,10 @@ namespace ground
 				}
 				else
 				{
-					pointsAux[j].y = randomizedY(pointsAux[j],1);
+					pointsAux[j].y = randomizedY(pointsAux[j], 1);
 				}
 			}
-			
+
 			ground.parts[static_cast<int>(static_cast<PartName>(i))].shape = irregular::init(pointsAux, maxPoints);
 			setLimitLine(ground.parts[static_cast<int>(static_cast<PartName>(i))]);
 		}

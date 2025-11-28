@@ -36,10 +36,17 @@ namespace render
 			std::cerr << "Error loading LucasGalli.png :(" << std::endl;
 		}
 
+		if (!externs::groundTexture.loadFromFile("res\\img\\ground\\DirtBG.png"))
+		{
+			std::cerr << "Error loading LucasGalli.png :(" << std::endl;
+		}
+
 		car = car::init();
 
 		parallax::init(clouds, externs::cloudTexture, 50.0f, false, -250.0f);
 		parallax::init(hills, externs::hillTexture, 100.0f, true, 100.0f);
+
+		
 	}
 
 	void update(car::Car& car)

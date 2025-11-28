@@ -27,6 +27,8 @@ namespace externs
 
 	extern sf::Texture driverSprite;
 
+	extern sf::Texture groundTexture;
+
 	extern sf::SoundBuffer engineBuffer;
 	extern sf::Sound engineSound;
 
