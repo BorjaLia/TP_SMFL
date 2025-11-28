@@ -91,7 +91,7 @@ namespace button
 
 		textObj.setOrigin({ textRect.position.x + textRect.size.x / 2.0f, textRect.size.y + textRect.position.y / 2.0f });
 
-		textObj.setPosition({ button.position.x + button.width / 2.0f,button.position.y + button.height / 2.0f });
+		textObj.setPosition({ button.position.x + button.width / 2.0f,button.position.y + button.height / 2.0f +9.5f });
 
 		window.draw(textObj);
 	}
