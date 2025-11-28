@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SFML/Graphics.hpp"
+
 namespace color
 {
 	struct RGBColor
@@ -34,5 +36,7 @@ namespace color
 		{170,172,171,255},
 		{121,124,122,255},
 	};
+
+	sf::Color toSFMLColor(color::RGBColor color);
 }
 

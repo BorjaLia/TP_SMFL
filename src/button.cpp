@@ -9,11 +9,6 @@ namespace button
 	static color::RGBColor hoverColor = color::colors[static_cast<int>(color::ColorsName::MediumWhite)];
 	static color::RGBColor pressedColor = color::colors[static_cast<int>(color::ColorsName::DarkWhite)];
 
-	sf::Color toSFMLColor(color::RGBColor color)
-	{
-		return sf::Color(static_cast<uint8_t>(color.r), static_cast<uint8_t>(color.g), static_cast<uint8_t>(color.b));
-	}
-
 	Button init(float x, float y, float width, float height, std::string& text)
 	{
 		Button button;
@@ -73,7 +68,7 @@ namespace button
 		switch (button.state)
 		{
 		case State::Normal:
-			rect.setFillColor(toSFMLColor(normalColor));
+			rect.setFillColor(color::toSFMLColor(normalColor));
 			break;
 		case State::Hover:
 			rect.setFillColor(toSFMLColor(hoverColor));
