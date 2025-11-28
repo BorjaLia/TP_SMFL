@@ -59,6 +59,8 @@ namespace game
 
 		label::Label creditsText[maxCreditsText];
 		label::Label rulesText[maxRulesText];
+		label::Label pauseText;
+
 		ground::Ground ground;
 		car::Car car = car::Car();
 		label::Label verText;
@@ -66,6 +68,8 @@ namespace game
 		sf::Font roboto;
 
 		button::Button pause;
+		button::Button pauseBack;
+		button::Button retry;
 
 		button::Button play;
 		button::Button credits;
@@ -93,6 +97,7 @@ namespace game
 	static bool wasPausedPressed = false;
 	static bool isPausedPressed = false;
 	static bool isPaused = false;
+	static bool retry = false;
 
 	namespace delta
 	{
@@ -136,6 +141,8 @@ namespace game //definiciones
 	static void init()
 	{
 		std::string pauseText = "Pause";
+		std::string pauseBackText = "Menu";
+		std::string retryText = "Retry";
 		std::string playText = "Play";
 		std::string creditsText = "Credits";
 		std::string rulesText = "Rules";
@@ -161,7 +168,11 @@ namespace game //definiciones
 		std::string rulesText8 = "-ESC: Pause";
 
 		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 400.0f, 100.0f, 50.0f, playText);
+
 		objects::pause = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, pauseText);
+		objects::pauseBack = button::init(externs::screenWidth / 2.f - 150.f -50.F, 500.f, 100.f, 50.f, pauseBackText);
+		objects::retry = button::init(externs::screenWidth / 2.f + 150.f - 50.F, 500.f, 100.f, 50.f, retryText);
+
 		objects::rules = button::init(externs::screenWidth / 2.0f - 50.f, 500, 100.f, 50.f, rulesText);
 		objects::credits = button::init(externs::screenWidth / 2.0f - 50.0f, 600.0f, 100.0f, 50.0f, creditsText);
 		objects::exit = button::init(externs::screenWidth / 2.0f - 50.0f, 700.0f, 100.0f, 50.0f, exitText);
@@ -193,6 +204,8 @@ namespace game //definiciones
 		objects::rulesText[static_cast<int>(RulesText::Pause)] = label::init({ externs::screenWidth / 2.f - 100.f, 650.f }, rulesText8, objects::roboto, 15, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
 
 		objects::verText = label::init(vec::Vector2{ externs::screenWidth / 3.0f, 10.0f }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+
+		objects::pauseText = label::init(vec::Vector2{ externs::screenWidth / 2.f-185.f, 150.f }, pauseText, objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 	}
 
 	static void update()
@@ -217,12 +230,38 @@ namespace game //definiciones
 
 			if (isPaused)
 			{
+				sf::View currentView = objects::window.getView();
+
+				objects::window.setView(objects::window.getDefaultView());
+
+				button::update(objects::window, objects::pauseBack);
+				button::update(objects::window, objects::retry);
+
+				if (objects::pauseBack.clicked)
+				{
+					scenes::nextScene = Scene::MainMenu;
+					isPaused = false;
+					sound::init();
+				}
+
+				if (objects::retry.clicked)
+				{
+					retry = true;
+					isPaused = false;
+					sound::init();
+				}
+
+				objects::window.setView(currentView);
+
+				
+
 				return;
 			}
 
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
+			if (retry)
 			{
 				car::reset(objects::car, { externs::screenWidth,externs::screenHeight / 3.0f });
+				retry = false;
 			}
 
 			sound::update();
@@ -309,19 +348,23 @@ namespace game //definiciones
 			ground::draw(objects::ground, objects::window);
 			car::draw(objects::car, objects::window);
 
+			sf::View currentView = objects::window.getView();
+
+			objects::window.setView(objects::window.getDefaultView());
+
+			car::drawScore(objects::car, objects::window, objects::roboto);
+
 			if (isPaused)
 			{
-				sf::RectangleShape screen;
-				screen.setOrigin({ objects::car.transform.position.x,-objects::car.transform.position.y });
-				screen.setPosition({ objects::car.transform.position.x,objects::car.transform.position.y });
-				screen.setSize({ 9999.0f,9999.0f });
-
 				car::drawScore(objects::car, objects::window, objects::roboto);
 
-				screen.setFillColor({ 128,128,128,128 });
-
-				objects::window.draw(screen);
+				label::draw(objects::pauseText, objects::window);
+				button::draw(objects::window, objects::pauseBack, objects::roboto);
+				button::draw(objects::window, objects::retry, objects::roboto);
 			}
+
+			objects::window.setView(currentView);
+
 			break;
 		}
 		case game::Scene::MainMenu:
