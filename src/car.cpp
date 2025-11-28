@@ -2,6 +2,7 @@
 #include <SFML/System/Angle.hpp> 
 
 #include "globals.h"
+#include "label.h"
 
 namespace car
 {
@@ -35,8 +36,8 @@ namespace car
 
 		float halfWidth = car.transform.scale.x / 2.0f;
 		float halfHeight = car.transform.scale.y / 2.0f;
-		
-		car.deathCollision.pos = { 0.0f,- 1.5f * halfHeight};
+
+		car.deathCollision.pos = { 0.0f,-1.5f * halfHeight };
 		car.deathCollision.size = { car.collision.size.x * 0.5f, 2.0f * car.collision.size.y };
 
 		wheel::Wheel wheel1;
@@ -105,6 +106,8 @@ namespace car
 
 		car.sprite.setPosition(sf::Vector2f(car.transform.scale.x, car.transform.scale.y));
 
+		car.score = 0.0f;
+
 		reset(car);
 
 		return car;
@@ -164,7 +167,7 @@ namespace car
 
 		if (!car.isAlive)
 		{
-			car.driverSprite.setColor(sf::Color(192,0,0));
+			car.driverSprite.setColor(sf::Color(192, 0, 0));
 		}
 
 		window.draw(car.driverSprite);
@@ -215,7 +218,7 @@ namespace car
 
 			rectangleDeath.setOrigin({ car.deathCollision.size.x / 2.0f, car.deathCollision.size.y / 2.0f });
 			rectangleDeath.setPosition({ car.transform.position.x + deathCollisionCorrected.x, car.transform.position.y + deathCollisionCorrected.y });
-			
+
 			sf::Angle angleDeath = sf::radians(car.transform.rotation);
 			rectangleDeath.setRotation(angleDeath);
 
@@ -286,6 +289,7 @@ namespace car
 		car.rigidBody.angularVelocity = 0.0f;
 		car.rigidBody.force = { 0.0f, 0.0f };
 		car.rigidBody.torque = 0.0f;
+		car.score = 0.0f;
 
 		for (int i = 0; i < car.wheels.size(); i++)
 		{
@@ -301,6 +305,22 @@ namespace car
 			car.wheels[i].rigidBody.torque = 0.0f;
 
 			car.wheels[i].isGrounded = false;
+		}
+	}
+
+	void drawScore(Car& car, sf::RenderWindow& window, sf::Font roboto)
+	{
+		sf::Text scoreText(roboto, "Score: " + std::to_string(static_cast<int>(car.score)), 20);
+		scoreText.setFillColor(sf::Color::White);
+		scoreText.setPosition({ 20.0f, 10.0f });
+		window.draw(scoreText);
+
+		if (car.airTricks > 0)
+		{
+			sf::Text trickText(roboto, "Tricks: " + std::to_string(car.airTricks), 20);
+			trickText.setFillColor(sf::Color::Yellow);
+			trickText.setPosition({ 20.0f, 60.0f });
+			window.draw(trickText);
 		}
 	}
 
@@ -350,7 +370,7 @@ namespace car
 			return;
 		}
 
-		if (car.transform.position.x /500.0f > car.distanceScore)
+		if (car.transform.position.x / 500.0f > car.distanceScore)
 		{
 			car.distanceScore = car.transform.position.x / 500.0f;
 		}
@@ -411,12 +431,11 @@ namespace car
 			anchorVel.x += -car.rigidBody.angularVelocity * mountOffset.y;
 			anchorVel.y += car.rigidBody.angularVelocity * mountOffset.x;
 
-			w.transform.rotation += mth::DegreeToRadian( (anchorVel.x > 1 ? 1.0f : -1.0f) * anchorVel.magnitude() * externs::deltaT);
+			w.transform.rotation += mth::DegreeToRadian((anchorVel.x > 1 ? 1.0f : -1.0f) * anchorVel.magnitude() * externs::deltaT);
 
 			vec::Vector2 forceOnWheel = rigidbody::ApplySpring(w.rigidBody, w.transform, w.suspension, anchorVel, car.transform.rotation);
 
 			rigidbody::AddForceAtPosition(car.rigidBody, forceOnWheel * -1.0f, mountPosWorld, car.transform.position);
-
 		}
 	}
 }

@@ -239,6 +239,8 @@ namespace game //definiciones
 			sf::View currentView = objects::window.getView();
 			objects::window.setView(objects::window.getDefaultView());
 
+			car::drawScore(objects::car, objects::window, objects::roboto);
+
 			objects::window.setView(currentView);
 
 			break;
