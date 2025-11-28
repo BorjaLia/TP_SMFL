@@ -34,6 +34,8 @@ namespace game
 		label::Label verText;
 		sf::Font roboto;
 
+		button::Button pause;
+
 		button::Button play;
 		button::Button credits;
 		button::Button exit;
@@ -56,6 +58,10 @@ namespace game
 	static void wheelCollision();
 	static void updateCamera();
 
+	static bool wasPausedPressed = false;
+	static bool isPausedPressed = false;
+	static bool isPaused = false;
+
 	namespace delta
 	{
 		sf::Clock clock;
@@ -67,6 +73,7 @@ namespace game
 		static void init();
 		static void update();
 	}
+
 }
 
 namespace game //definiciones
@@ -98,10 +105,12 @@ namespace game //definiciones
 
 	static void init()
 	{
+		std::string pauseText = "Pause";
 		std::string playText = "Play";
 		std::string creditsText = "Credits";
 		std::string exitText = "Exit";
 
+		objects::pause = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, pauseText);
 		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, playText);
 		objects::credits = button::init(externs::screenWidth / 2.0f - 50.0f, 600.0f, 100.0f, 50.0f, creditsText);
 		objects::exit = button::init(externs::screenWidth / 2.0f - 50.0f, 700.0f, 100.0f, 50.0f, exitText);
@@ -130,6 +139,21 @@ namespace game //definiciones
 		{
 		case game::Scene::Playing:
 		{
+			wasPausedPressed = isPausedPressed;
+			isPausedPressed = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape);
+
+			if (isPausedPressed && !wasPausedPressed)
+			{
+				isPaused = !isPaused;
+
+				std::cout << objects::cameraOffset;
+			}
+
+			if (isPaused)
+			{
+				return;
+			}
+
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::R))
 			{
 				car::reset(objects::car, { externs::screenWidth,externs::screenHeight / 3.0f });
@@ -153,6 +177,7 @@ namespace game //definiciones
 			if (objects::play.clicked)
 			{
 				scenes::nextScene = Scene::Playing;
+				isPaused = false;
 				sound::init();
 			}
 
@@ -200,11 +225,17 @@ namespace game //definiciones
 			ground::draw(objects::ground, objects::window);
 			car::draw(objects::car, objects::window);
 
-			sf::View currentView = objects::window.getView();
-			objects::window.setView(objects::window.getDefaultView());
+			if (isPaused)
+			{
+				sf::RectangleShape screen;
+				screen.setOrigin({ objects::car.transform.position.x,-objects::car.transform.position.y });
+				screen.setPosition({ objects::car.transform.position.x,objects::car.transform.position.y });
+				screen.setSize({9999.0f,9999.0f});
 
-			objects::window.setView(currentView);
+				screen.setFillColor({128,128,128,128});
 
+				objects::window.draw(screen);
+			}
 			break;
 		}
 		case game::Scene::MainMenu:
@@ -251,8 +282,17 @@ namespace game //definiciones
 			vec::Vector2 p1 = objects::ground.parts[0].shape.points[i];
 			vec::Vector2 p2 = objects::ground.parts[0].shape.points[i + 1];
 
+
 			for (int k = 0; k < 4; k++)
 			{
+				if (isDeathBox)
+				{
+					if (mth::Max(p1.y, p2.y) > points[k].y && (p1.x > points[k].x && p2.x < points[k].x))
+					{
+						return true;
+					}
+
+				}
 				coll::CollisionResult result = coll::PointVsLineSegment(points[k], p1, p2);
 
 				if (result.isColliding)
@@ -306,7 +346,10 @@ namespace game //definiciones
 	{
 		if (ResolveRectVsGround(objects::car, objects::car.deathCollision, true))
 		{
-			externs::deathSound.play();
+			if (externs::deathSound.getStatus() != sf::SoundSource::Status::Playing)
+			{
+				externs::deathSound.play();
+			}
 
 			objects::car.isAlive = false;
 		}
@@ -426,6 +469,11 @@ namespace game //definiciones
 		objects::camera.move({ ((objects::cameraOffset + objects::car.transform.position.x) - objects::camera.getCenter().x) * 5.0f * externs::deltaT ,(objects::car.transform.position.y - objects::camera.getCenter().y) * 5.0f * externs::deltaT });
 
 		objects::window.setView(objects::camera);
+
+		objects::camera.setSize({mth::Min(objects::camera.getSize().x,1900.0f),mth::Min(objects::camera.getSize().y,1069.0f) });
+		objects::camera.setSize({mth::Max(objects::camera.getSize().x,300.0f),mth::Max(objects::camera.getSize().y,169.0f) });
+	
+		mth::Clamp(objects::cameraOffset,-269.0f,425.0f);
 	}
 
 	namespace delta
@@ -466,11 +514,11 @@ namespace game //definiciones
 
 			externs::deathSound.setVolume(10.0f);
 
-			if (!externs::deathBuffer.loadFromFile("res/sound/clap.wav"))
+			if (!externs::clapBuffer.loadFromFile("res/sound/clap.wav"))
 			{
 				std::cout << "Error: clap sound not found";
 			}
-			externs::deathSound.setBuffer(externs::clapBuffer);
+			externs::clapSound.setBuffer(externs::clapBuffer);
 
 			externs::clapSound.setVolume(10.0f);
 
