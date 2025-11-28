@@ -92,7 +92,6 @@ namespace car
 		wheel2.sprite.setOrigin({ wheelTexSize.x / 2.0f, wheelTexSize.y / 2.0f });
 		wheel2.sprite.setScale({ wheelDiameter / static_cast<float>(wheelTexSize.x), wheelDiameter / static_cast<float>(wheelTexSize.y) });
 
-
 		car.wheels.push_back(wheel1);
 		car.wheels.push_back(wheel2);
 
@@ -232,7 +231,7 @@ namespace car
 
 	static void updateSuspension(Car& car)
 	{
-		for (int i = 0; i < (int)car.wheels.size(); i++)
+		for (int i = 0; i < static_cast<int>(car.wheels.size()); i++)
 		{
 			wheel::Wheel& w = car.wheels[i];
 

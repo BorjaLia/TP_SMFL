@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 namespace globals
 {
@@ -25,4 +26,9 @@ namespace externs
 	extern sf::Texture wheelTexture;
 
 	extern sf::Texture driverSprite;
+
+	extern sf::SoundBuffer engineBuffer;
+	extern sf::Sound engineSound;
+
+	extern sf::Music backgroundMusic;
 }

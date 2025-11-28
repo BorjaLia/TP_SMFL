@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 #include "collision.h"
 #include "globals.h"
@@ -52,6 +53,12 @@ namespace game
 		sf::Clock clock;
 		static void updateDeltaT();
 	}
+
+	namespace sound
+	{
+		static void init();
+		static void update();
+	}
 }
 
 namespace game //definiciones
@@ -83,6 +90,7 @@ namespace game //definiciones
 
 	static void init()
 	{
+		sound::init();
 		objects::roboto = sf::Font("res/font/Jumps Winter.ttf");
 		objects::window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(externs::screenWidth), static_cast<unsigned int>(externs::screenHeight) }), "Gil climb");
 		objects::camera = objects::window.getView();
@@ -111,6 +119,7 @@ namespace game //definiciones
 				car::reset(objects::car, { externs::screenWidth,externs::screenHeight / 3.0f });
 			}
 
+			sound::update();
 			render::update(objects::car);
 			updateCamera();
 			carCollision();
@@ -297,6 +306,40 @@ namespace game //definiciones
 		static void updateDeltaT()
 		{
 			externs::deltaT = delta::clock.restart().asSeconds();
+		}
+	}
+
+	namespace sound
+	{
+		static void init()
+		{
+			if (!externs::engineBuffer.loadFromFile("res/sound/EngineSound.ogg"))
+			{
+				std::cout << "Error: engine sound not found";
+			}
+			externs::engineSound.setBuffer(externs::engineBuffer);
+
+			externs::engineSound.setLooping(true);
+			externs::engineSound.setVolume(20.0f); 
+
+			externs::engineSound.play();
+
+			if (!externs::backgroundMusic.openFromFile("res/sound/music.ogg"))
+			{
+				std::cout << "Error loading music";
+			}
+
+			externs::backgroundMusic.setLooping(true);
+			externs::backgroundMusic.setVolume(5.0f); 
+			externs::backgroundMusic.play();
+		}
+
+		static void update()
+		{
+			float speed = std::abs(objects::car.rigidBody.velocity.x);
+			float pitch = 1.0f + (speed / 1000.0f);
+
+			externs::engineSound.setPitch(pitch);
 		}
 	}
 }
