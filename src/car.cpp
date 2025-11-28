@@ -12,6 +12,8 @@ namespace car
 	{
 		Car car;
 
+		car.isAlive = true;
+
 		car.accelerateKey = sf::Keyboard::Key::D;
 		car.brakeKey = sf::Keyboard::Key::A;
 
@@ -30,6 +32,9 @@ namespace car
 
 		float halfWidth = car.collision.size.x / 2.0f;
 		float halfHeight = car.collision.size.y / 2.0f;
+		
+		car.deathCollision.pos = { 0.0f,-halfHeight};
+		car.deathCollision.size = car.collision.size * 0.5f;
 
 		wheel::Wheel wheel1;
 		wheel::Wheel wheel2;
@@ -39,7 +44,7 @@ namespace car
 		float wheelRestLength = 25.0f;
 		float wheelMaxDistance = 50.0f;
 
-		vec::Vector2 stiffness = { 2500.0f, 75.0f };
+		vec::Vector2 stiffness = { 2500.0f, 100.0f };
 		vec::Vector2 damping = { 100.0f, 50.0f };
 
 		wheel1.collision.radius = wheelRadius;
@@ -83,8 +88,6 @@ namespace car
 			reset(car, { car.transform.position.x,externs::screenHeight / 3.0f });
 		}
 
-		std::cout << car.transform.position << "\n";
-
 		manageInput(car);
 
 		vec::Vector2 gravity = { 0.0f, globals::gravity };
@@ -118,6 +121,41 @@ namespace car
 
 		window.draw(rectangle);
 
+		sf::RectangleShape rectangleDeath({ car.deathCollision.size.x, car.deathCollision.size.y });
+
+		rectangleDeath.setOrigin({ car.deathCollision.size.x / 2.0f, car.deathCollision.size.y / 2.0f });
+		sf::Angle angleDeath = sf::radians(car.transform.rotation);
+		rectangleDeath.setRotation(angleDeath);
+		rectangleDeath.setPosition({ car.transform.position.x + car.deathCollision.pos.x, car.transform.position.y + car.deathCollision.pos.y });
+		
+		rectangleDeath.setFillColor(sf::Color::Red);
+
+		window.draw(rectangleDeath);
+
+		coll::RectCorners corners = coll::GetWorldCorners(car.collision, car.transform);
+		vec::Vector2 points[4] = { corners.tl, corners.tr, corners.br, corners.bl };
+
+		for (int i = 0; i < 4; i++)
+		{
+			sf::CircleShape debugDot(3.0f);
+			debugDot.setOrigin({ 3.0f, 3.0f });
+			debugDot.setFillColor(sf::Color::Red);
+			debugDot.setPosition({ points[i].x, points[i].y });
+			window.draw(debugDot);
+		}
+
+		coll::RectCorners deathCorners = coll::GetWorldCorners(car.deathCollision, car.transform);
+		vec::Vector2 dPoints[4] = { deathCorners.tl, deathCorners.tr, deathCorners.br, deathCorners.bl };
+
+		for (int i = 0; i < 4; i++)
+		{
+			sf::CircleShape debugDot(3.0f);
+			debugDot.setOrigin({ 3.0f, 3.0f });
+			debugDot.setFillColor(sf::Color::Yellow);
+			debugDot.setPosition({ dPoints[i].x, dPoints[i].y });
+			window.draw(debugDot);
+		}
+
 		for (int i = 0; i < car.wheels.size(); i++)
 		{
 			sf::CircleShape circle(car.wheels[i].collision.radius);
@@ -145,6 +183,8 @@ namespace car
 
 	void reset(Car& car, vec::Vector2 position)
 	{
+		car.isAlive = true;
+
 		car.transform.position = position;
 		car.transform.rotation = 0.0f;
 
@@ -172,7 +212,12 @@ namespace car
 
 	static void manageInput(Car& car)
 	{
-		float torquePower = 80000.0f;
+		if (!car.isAlive)
+		{
+			return;
+		}
+
+		float torquePower = 120000.0f;
 		float drivePower = 200.0f;
 
 		vec::Vector2 forwardDir = { 1.0f, 0.0f };
@@ -224,6 +269,5 @@ namespace car
 			rigidbody::AddForceAtPosition(car.rigidBody, forceOnWheel * -1.0f, mountPosWorld, car.transform.position);
 		
 		}
-
 	}
 }
