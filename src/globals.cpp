@@ -23,4 +23,6 @@ namespace externs
 	sf::Sound engineSound{ engineBuffer };
 
 	sf::Music backgroundMusic;
+
+	sf::Font font;
 }
