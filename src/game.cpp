@@ -23,20 +23,38 @@ namespace game
 		Exit
 	};
 
+	enum class CreditsText
+	{
+		Rules,
+		Programmers,
+		Assets,
+		Eluney,
+		Borja,
+		Laure,
+		Movious,
+		Lucy,
+		Pou
+	};
+
 	namespace objects
 	{
+		static const int maxCreditsText = 9;
+
 		sf::View camera;
 		static float cameraOffset = (0.25f * externs::screenWidth);
 		sf::RenderWindow window;
 
+		label::Label creditsText[maxCreditsText];
 		ground::Ground ground;
 		car::Car car = car::Car();
 		label::Label verText;
+
 		sf::Font roboto;
 
 		button::Button play;
 		button::Button credits;
 		button::Button exit;
+		button::Button back;
 	}
 
 	namespace scenes
@@ -47,7 +65,6 @@ namespace game
 
 	static void game();
 	static void init();
-	static void deinit();
 	static void update();
 	static void draw();
 
@@ -92,8 +109,6 @@ namespace game //definiciones
 			update();
 			draw();
 		}
-
-		deinit();
 	}
 
 	static void init()
@@ -101,10 +116,21 @@ namespace game //definiciones
 		std::string playText = "Play";
 		std::string creditsText = "Credits";
 		std::string exitText = "Exit";
+		std::string backText = "Back";
+		std::string creditsText1 = "Credits";
+		std::string creditsText2 = "Programmers";
+		std::string creditsText3 = "Assets";
+		std::string creditsText4 = "Eluney Jazmin Mousseigne";
+		std::string creditsText5 = "Borja Lia Deichler";
+		std::string creditsText6 = "Agustin Ezequiel Laure";
+		std::string creditsText7 = "Movious (Lucas Galli)";
+		std::string creditsText8 = "lucylavend - itch.io";
+		std::string creditsText9 = "Pou - music";
 
 		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, playText);
 		objects::credits = button::init(externs::screenWidth / 2.0f - 50.0f, 600.0f, 100.0f, 50.0f, creditsText);
 		objects::exit = button::init(externs::screenWidth / 2.0f - 50.0f, 700.0f, 100.0f, 50.0f, exitText);
+		objects::back = button::init(externs::screenWidth / 16.f, 700, 100, 50.f, backText);
 
 		sound::init();
 		objects::roboto = sf::Font("res/font/Jumps Winter.ttf");
@@ -112,12 +138,17 @@ namespace game //definiciones
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
 		render::init(objects::car);
+		objects::creditsText[static_cast<int>(CreditsText::Rules)] = label::init({externs::screenWidth / 2.f - 100.f,100.f}, creditsText1, objects::roboto, 50, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::creditsText[static_cast<int>(CreditsText::Programmers)] = label::init({ externs::screenWidth / 5-37,275.f }, creditsText2, objects::roboto, 37, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::creditsText[static_cast<int>(CreditsText::Assets)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,275.f }, creditsText3, objects::roboto, 37, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::creditsText[static_cast<int>(CreditsText::Eluney)] = label::init({ externs::screenWidth / 5 - 17,420.f }, creditsText4, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkWhite)]);
+		objects::creditsText[static_cast<int>(CreditsText::Borja)] = label::init({ externs::screenWidth / 5 - 17,520.f}, creditsText5, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkWhite)]);
+		objects::creditsText[static_cast<int>(CreditsText::Laure)] = label::init({ externs::screenWidth / 5 - 17,620.f}, creditsText6, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkWhite)]);
+		objects::creditsText[static_cast<int>(CreditsText::Movious)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,400.f  }, creditsText7, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkWhite)]);
+		objects::creditsText[static_cast<int>(CreditsText::Lucy)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,500.f  }, creditsText8, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkWhite)]);
+		objects::creditsText[static_cast<int>(CreditsText::Pou)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,600.f  }, creditsText9, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkWhite)]);
+
 		objects::verText = label::init(vec::Vector2{ externs::screenWidth / 3.0f, 10.0f }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
-	}
-
-	static void deinit()
-	{
-
 	}
 
 	static void update()
@@ -170,12 +201,17 @@ namespace game //definiciones
 		}
 		case game::Scene::Credits:
 		{
+			button::update(objects::window, objects::back);
+
+			if (objects::back.clicked)
+			{
+				scenes::nextScene = Scene::MainMenu;
+			}
 
 			break;
 		}
 		case game::Scene::Rules:
 		{
-
 			break;
 		}
 		case game::Scene::Exit:
@@ -219,7 +255,12 @@ namespace game //definiciones
 		}
 		case game::Scene::Credits:
 		{
+			button::draw(objects::window, objects::back, objects::roboto);
 
+			for (int i = 0; i < objects::maxCreditsText; i++)
+			{
+				label::draw(objects::creditsText[i], objects::window);
+			}
 			break;
 		}
 		case game::Scene::Rules:

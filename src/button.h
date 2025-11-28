@@ -23,7 +23,7 @@ namespace button
 
         std::string text;
         State state;
-        bool clicked;
+        bool clicked = false;
     };
 
     Button init(float x, float y, float width, float height, std::string& text);

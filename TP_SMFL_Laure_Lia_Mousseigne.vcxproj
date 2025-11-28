@@ -23,6 +23,7 @@
     <ClCompile Include="src\button.cpp" />
     <ClCompile Include="src\car.cpp" />
     <ClCompile Include="src\collision.cpp" />
+    <ClCompile Include="src\color.cpp" />
     <ClCompile Include="src\file_manager.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\globals.cpp" />
