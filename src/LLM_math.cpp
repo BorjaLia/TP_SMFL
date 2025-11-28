@@ -158,6 +158,18 @@ namespace mth
 		}
 		return min + static_cast<float>(rand()) / (static_cast<float>(RAND_MAX / (max - min)));
 	}
+
+	float getFactorial(float num)
+	{
+		float factorial = 1.f;
+
+		for (int i = 1; i <= num; i++)
+		{
+			factorial *= i;
+		}
+		
+		return factorial;
+	}
 }
 
 namespace vec

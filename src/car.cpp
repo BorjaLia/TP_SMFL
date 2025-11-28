@@ -80,7 +80,7 @@ namespace car
 	{
 		if (car.transform.position.y > externs::screenHeight)
 		{
-			reset(car, { car.transform.position.x,externs::screenHeight / 3.0f });
+			//reset(car, { car.transform.position.x,externs::screenHeight / 3.0f });
 		}
 
 		std::cout << car.transform.position << "\n";

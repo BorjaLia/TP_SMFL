@@ -28,7 +28,8 @@ namespace mth
 
 	void SetRandomSeed(time_t seed = 0);													// set random seed
 	int GetRandom(int min = 0, int max = 100);												// get random int
-	float GetRandomf(float min = 0.0f, float max = 1.0f);		// get random float
+	float GetRandomf(float min = 0.0f, float max = 1.0f);									// get random float
+	float getFactorial(float num = 0);														// get factorial float
 }
 
 namespace vec

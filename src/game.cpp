@@ -214,46 +214,49 @@ namespace game //definiciones
 			}
 		}
 
-		for (int i = 0; i < objects::ground.parts[0].shape.pointAmount - 1; i++)
+		for (int i = 0; i < ground::totalParts; i++)
 		{
-			vec::Vector2 p1 = objects::ground.parts[0].shape.points[i];
-			vec::Vector2 p2 = objects::ground.parts[0].shape.points[i + 1];
-
-			for (int j = 0; j < objects::car.wheels.size(); j++)
+			for (int j = 0; j < objects::ground.parts[i].shape.pointAmount - 1; j++)
 			{
-				vec::Vector2 wheelPos = objects::car.wheels[j].transform.position + objects::car.wheels[j].offset;
+				vec::Vector2 p1 = objects::ground.parts[i].shape.points[j];
+				vec::Vector2 p2 = objects::ground.parts[i].shape.points[j + 1];
 
-				vec::Vector2 lineDir = p2 - p1;
-				float lineLen = lineDir.magnitude();
-				lineDir.normalize();
-
-				vec::Vector2 toWheel = wheelPos - p1;
-				float t = toWheel * lineDir;
-				t = std::max(0.0f, std::min(lineLen, t));
-
-				vec::Vector2 closestPoint = p1 + (lineDir * t);
-
-				vec::Vector2 distVec = wheelPos - closestPoint;
-				float dist = distVec.magnitude();
-
-				if (dist < objects::car.wheels[j].collision.radius)
+				for (int k = 0; k < objects::car.wheels.size(); k++)
 				{
-					objects::car.wheels[j].isGroundedTimer = objects::car.wheels[j].isGroundedTimerLimit;
-					objects::car.wheels[j].isGrounded = true;
+					vec::Vector2 wheelPos = objects::car.wheels[k].transform.position + objects::car.wheels[k].offset;
 
-					float penetration = objects::car.wheels[j].collision.radius - dist;
-					vec::Vector2 normal = distVec;
-					normal.normalize();
+					vec::Vector2 lineDir = p2 - p1;
+					float lineLen = lineDir.magnitude();
+					lineDir.normalize();
 
-					objects::car.wheels[j].transform.position = objects::car.wheels[j].transform.position + (normal * penetration);
+					vec::Vector2 toWheel = wheelPos - p1;
+					float t = toWheel * lineDir;
+					t = std::max(0.0f, std::min(lineLen, t));
 
-					float velAlongNormal = objects::car.wheels[j].rigidBody.velocity * normal;
-					if (velAlongNormal < 0)
+					vec::Vector2 closestPoint = p1 + (lineDir * t);
+
+					vec::Vector2 distVec = wheelPos - closestPoint;
+					float dist = distVec.magnitude();
+
+					if (dist < objects::car.wheels[k].collision.radius)
 					{
-						vec::Vector2 remove = normal * velAlongNormal;
-						objects::car.wheels[j].rigidBody.velocity = objects::car.wheels[j].rigidBody.velocity - remove;
+						objects::car.wheels[k].isGroundedTimer = objects::car.wheels[k].isGroundedTimerLimit;
+						objects::car.wheels[k].isGrounded = true;
 
-						//objects::car.wheels[j].rigidBody.velocity.x *= 0.9f;
+						float penetration = objects::car.wheels[k].collision.radius - dist;
+						vec::Vector2 normal = distVec;
+						normal.normalize();
+
+						objects::car.wheels[k].transform.position = objects::car.wheels[k].transform.position + (normal * penetration);
+
+						float velAlongNormal = objects::car.wheels[k].rigidBody.velocity * normal;
+						if (velAlongNormal < 0)
+						{
+							vec::Vector2 remove = normal * velAlongNormal;
+							objects::car.wheels[k].rigidBody.velocity = objects::car.wheels[k].rigidBody.velocity - remove;
+
+							//objects::car.wheels[k].rigidBody.velocity.x *= 0.9f;
+						}
 					}
 				}
 			}

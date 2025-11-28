@@ -7,18 +7,18 @@
 
 namespace ground
 {
-	const int totalParts = 3;
+	const int totalParts = 2;
 
 	struct Part
 	{
 		irregular::Irregular shape;
 		bool canMove = false;
+		vec::Vector2 limitLine[2];
 	};
 
 	enum class PartName
 	{
 		Left,
-		Middle,
 		Right
 	};
 
