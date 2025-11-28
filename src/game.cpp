@@ -150,7 +150,7 @@ namespace game //definiciones
 		std::string creditsText7 = "Movious (Lucas Galli)";
 		std::string creditsText8 = "lucylavend - itch.io";
 		std::string creditsText9 = "Pou - music";
-		
+
 		std::string rulesText1 = "Rules";
 		std::string rulesText2 = "-Drive as far as you can and perform tricks to gain points but";
 		std::string rulesText3 = " be CAREFUL, if your head touches the ground, you die";
@@ -160,10 +160,9 @@ namespace game //definiciones
 		std::string rulesText7 = "-D: Accelerate right";
 		std::string rulesText8 = "-ESC: Pause";
 
-
+		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 400.0f, 100.0f, 50.0f, playText);
 		objects::pause = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, pauseText);
-		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, playText);
-		objects::rules = button::init(externs::screenWidth/2.0f - 50.f, 500, 100.f, 50.f, rulesText);
+		objects::rules = button::init(externs::screenWidth / 2.0f - 50.f, 500, 100.f, 50.f, rulesText);
 		objects::credits = button::init(externs::screenWidth / 2.0f - 50.0f, 600.0f, 100.0f, 50.0f, creditsText);
 		objects::exit = button::init(externs::screenWidth / 2.0f - 50.0f, 700.0f, 100.0f, 50.0f, exitText);
 		objects::back = button::init(externs::screenWidth / 16.f, 700, 100, 50.f, backText);
@@ -174,15 +173,15 @@ namespace game //definiciones
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
 		render::init(objects::car);
-		objects::creditsText[static_cast<int>(CreditsText::Credits)] = label::init({externs::screenWidth / 2.f - 100.f,100.f}, creditsText1, objects::roboto, 50, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
-		objects::creditsText[static_cast<int>(CreditsText::Programmers)] = label::init({ externs::screenWidth / 5-37,275.f }, creditsText2, objects::roboto, 37, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::creditsText[static_cast<int>(CreditsText::Credits)] = label::init({ externs::screenWidth / 2.f - 100.f,100.f }, creditsText1, objects::roboto, 50, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::creditsText[static_cast<int>(CreditsText::Programmers)] = label::init({ externs::screenWidth / 5 - 37,275.f }, creditsText2, objects::roboto, 37, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 		objects::creditsText[static_cast<int>(CreditsText::Assets)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,275.f }, creditsText3, objects::roboto, 37, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 		objects::creditsText[static_cast<int>(CreditsText::Eluney)] = label::init({ externs::screenWidth / 5 - 17,420.f }, creditsText4, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
-		objects::creditsText[static_cast<int>(CreditsText::Borja)] = label::init({ externs::screenWidth / 5 - 17,520.f}, creditsText5, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
-		objects::creditsText[static_cast<int>(CreditsText::Laure)] = label::init({ externs::screenWidth / 5 - 17,620.f}, creditsText6, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
-		objects::creditsText[static_cast<int>(CreditsText::Movious)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,400.f  }, creditsText7, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
-		objects::creditsText[static_cast<int>(CreditsText::Lucy)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,500.f  }, creditsText8, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
-		objects::creditsText[static_cast<int>(CreditsText::Pou)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,600.f  }, creditsText9, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
+		objects::creditsText[static_cast<int>(CreditsText::Borja)] = label::init({ externs::screenWidth / 5 - 17,520.f }, creditsText5, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
+		objects::creditsText[static_cast<int>(CreditsText::Laure)] = label::init({ externs::screenWidth / 5 - 17,620.f }, creditsText6, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
+		objects::creditsText[static_cast<int>(CreditsText::Movious)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,400.f }, creditsText7, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
+		objects::creditsText[static_cast<int>(CreditsText::Lucy)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,500.f }, creditsText8, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
+		objects::creditsText[static_cast<int>(CreditsText::Pou)] = label::init({ externs::screenWidth - externs::screenWidth / 3 + 12.f,600.f }, creditsText9, objects::roboto, 17, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
 
 		objects::rulesText[static_cast<int>(RulesText::Rules)] = label::init({ externs::screenWidth / 2.f - 82.f, 100.f }, rulesText1, objects::roboto, 50, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 		objects::rulesText[static_cast<int>(RulesText::Explanation1)] = label::init({ 140, 225.f }, rulesText2, objects::roboto, 28, color::colors[static_cast<int>(color::ColorsName::DarkGreen)]);
@@ -315,15 +314,11 @@ namespace game //definiciones
 				sf::RectangleShape screen;
 				screen.setOrigin({ objects::car.transform.position.x,-objects::car.transform.position.y });
 				screen.setPosition({ objects::car.transform.position.x,objects::car.transform.position.y });
-				screen.setSize({9999.0f,9999.0f});
+				screen.setSize({ 9999.0f,9999.0f });
 
-<<<<<<< HEAD
-			car::drawScore(objects::car, objects::window, objects::roboto);
+				car::drawScore(objects::car, objects::window, objects::roboto);
 
-			objects::window.setView(currentView);
-=======
-				screen.setFillColor({128,128,128,128});
->>>>>>> refs/remotes/origin/main
+				screen.setFillColor({ 128,128,128,128 });
 
 				objects::window.draw(screen);
 			}
@@ -574,10 +569,10 @@ namespace game //definiciones
 
 		objects::window.setView(objects::camera);
 
-		objects::camera.setSize({mth::Min(objects::camera.getSize().x,1900.0f),mth::Min(objects::camera.getSize().y,1069.0f) });
-		objects::camera.setSize({mth::Max(objects::camera.getSize().x,300.0f),mth::Max(objects::camera.getSize().y,169.0f) });
-	
-		mth::Clamp(objects::cameraOffset,-269.0f,425.0f);
+		objects::camera.setSize({ mth::Min(objects::camera.getSize().x,1900.0f),mth::Min(objects::camera.getSize().y,1069.0f) });
+		objects::camera.setSize({ mth::Max(objects::camera.getSize().x,300.0f),mth::Max(objects::camera.getSize().y,169.0f) });
+
+		mth::Clamp(objects::cameraOffset, -269.0f, 425.0f);
 	}
 
 	namespace delta
