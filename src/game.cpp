@@ -181,7 +181,7 @@ namespace game //definiciones
 		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 400.0f, 100.0f, 50.0f, playText);
 
 		objects::pause = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, pauseText);
-		objects::pauseBack = button::init(externs::screenWidth / 2.f - 150.f -50.F, 500.f, 100.f, 50.f, pauseBackText);
+		objects::pauseBack = button::init(externs::screenWidth / 2.f - 150.f - 50.F, 500.f, 100.f, 50.f, pauseBackText);
 		objects::retry = button::init(externs::screenWidth / 2.f + 150.f - 50.F, 500.f, 100.f, 50.f, retryText);
 
 		objects::rules = button::init(externs::screenWidth / 2.0f - 50.f, 500, 100.f, 50.f, rulesText);
@@ -223,7 +223,7 @@ namespace game //definiciones
 
 		objects::verText = label::init(vec::Vector2{ externs::screenWidth / 3.0f, 10.0f }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 
-		objects::pauseText = label::init(vec::Vector2{ externs::screenWidth / 2.f-185.f, 150.f }, pauseText, objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
+		objects::pauseText = label::init(vec::Vector2{ externs::screenWidth / 2.f - 185.f, 150.f }, pauseText, objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 	}
 
 	static void update()
@@ -271,7 +271,7 @@ namespace game //definiciones
 
 				objects::window.setView(currentView);
 
-				
+
 
 				return;
 			}
@@ -414,21 +414,13 @@ namespace game //definiciones
 
 			objects::window.setView(currentView);
 
-				objects::window.draw(screen);
-			}
-
-			sf::View currentView = objects::window.getView();
-
-			objects::window.setView(objects::window.getDefaultView());
-
-			car::drawScore(objects::car, objects::window, objects::roboto);
-
-			objects::window.setView(currentView);
-
 			break;
+
 		}
 		case game::Scene::MainMenu:
 		{
+			objects::window.setView(objects::window.getDefaultView());
+
 			render::draw(objects::window);
 			label::draw(objects::verText, objects::window);
 			button::draw(objects::window, objects::play, objects::roboto);
@@ -462,7 +454,6 @@ namespace game //definiciones
 		}
 		case game::Scene::Death:
 		{
-
 			objects::window.setView(objects::window.getDefaultView());
 
 			objects::window.clear(sf::Color(50, 0, 0));
@@ -483,10 +474,14 @@ namespace game //definiciones
 		}
 		default:
 			break;
+
 		}
+
+
 
 		objects::window.display();
 	}
+
 
 	static bool ResolveRectVsGround(car::Car& car, shape::Rectangle& rect, bool isDeathBox)
 	{
