@@ -160,9 +160,8 @@ namespace game //definiciones
 		std::string rulesText7 = "-D: Accelerate right";
 		std::string rulesText8 = "-ESC: Pause";
 
-
+		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 400.0f, 100.0f, 50.0f, playText);
 		objects::pause = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, pauseText);
-		objects::play = button::init(externs::screenWidth / 2.0f - 50.0f, 500.0f, 100.0f, 50.0f, playText);
 		objects::rules = button::init(externs::screenWidth / 2.0f - 50.f, 500, 100.f, 50.f, rulesText);
 		objects::credits = button::init(externs::screenWidth / 2.0f - 50.0f, 600.0f, 100.0f, 50.0f, creditsText);
 		objects::exit = button::init(externs::screenWidth / 2.0f - 50.0f, 700.0f, 100.0f, 50.0f, exitText);
