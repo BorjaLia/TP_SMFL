@@ -26,7 +26,7 @@ namespace game
 		sf::RenderWindow window;
 
 		ground::Ground ground;
-		car::Car car;
+		car::Car car = car::Car();
 		label::Label verText;
 		sf::Font roboto;
 	}
@@ -87,8 +87,7 @@ namespace game //definiciones
 		objects::window = sf::RenderWindow(sf::VideoMode({ static_cast<unsigned int>(externs::screenWidth), static_cast<unsigned int>(externs::screenHeight) }), "Gil climb");
 		objects::camera = objects::window.getView();
 		objects::ground = ground::init();
-		objects::car = car::init();
-		render::init();
+		render::init(objects::car);
 		objects::verText = label::init(vec::Vector2{ 1000, 300 }, "Gil climb", objects::roboto, 100, color::colors[static_cast<int>(color::ColorsName::RedNapthol)]);
 	}
 
@@ -112,7 +111,7 @@ namespace game //definiciones
 				car::reset(objects::car, { externs::screenWidth,externs::screenHeight / 3.0f });
 			}
 
-			render::update();
+			render::update(objects::car);
 			updateCamera();
 			carCollision();
 			ground::update(objects::ground, objects::car);
