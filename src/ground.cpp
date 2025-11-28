@@ -56,6 +56,13 @@ namespace ground
 		return newGround;
 	}
 
+	void init(Ground& ground)
+	{
+		initParts(ground);
+
+		ground.isLooping = false;
+	}
+
 	void update(Ground& ground, car::Car car)
 	{
 		if (car.transform.position.x >= ground.parts[static_cast<int>(PartName::Right)].shape.points[maxPoints / 2].x)

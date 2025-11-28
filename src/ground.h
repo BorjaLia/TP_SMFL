@@ -30,6 +30,7 @@ namespace ground
 	};
 
 	Ground init();
+	void init(Ground& ground);
 	void update(Ground& ground, car::Car car);
 	void draw(Ground& ground, sf::RenderWindow& window);
 }
