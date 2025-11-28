@@ -44,8 +44,6 @@ namespace ground
 
 	static const color::ColorsName outLineColor = color::ColorsName::DarkGreen;
 	static const color::ColorsName secondLineColor = color::ColorsName::LightGreen;
-	static const color::ColorsName groundColor = color::ColorsName::Brown;
-
 
 	Ground init()
 	{

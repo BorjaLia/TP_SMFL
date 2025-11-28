@@ -10,7 +10,7 @@ namespace color
 		int a = 0;
 	};
 
-	static const int maxColors = 6;
+	static const int maxColors = 7;
 	enum class ColorsName
 	{
 		DarkGreen,
